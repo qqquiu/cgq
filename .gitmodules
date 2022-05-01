@@ -2,6 +2,6 @@
 	path = deps/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = docking
-[submodule "glfw"]
-	path = glfw
+[submodule "deps/glfw"]
+	path = deps/glfw
 	url = https://github.com/glfw/glfw.git

@@ -7,10 +7,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\cgq-entry.cpp">
+    <ClCompile Include="src\entry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\cgq_pch.cpp">
+    <ClCompile Include="src\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\core.cpp">
@@ -19,6 +19,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\core.h" />
-    <ClInclude Include="src\cgq_pch.h" />
+    <ClInclude Include="src\pch.h" />
   </ItemGroup>
 </Project>

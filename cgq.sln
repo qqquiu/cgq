@@ -6,13 +6,14 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgq", "cgq.vcxproj", "{F996EE47-9AC3-42D6-9C9C-A61326A430DE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D6CC2483-1694-43AC-8B60-46EC1B23304B} = {D6CC2483-1694-43AC-8B60-46EC1B23304B}
+		{BBD1C1FE-B55E-43EC-B8A6-DBEB45BA6824} = {BBD1C1FE-B55E-43EC-B8A6-DBEB45BA6824}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{894E0707-E247-4F4E-A4E1-88304F5B05E8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "deps\imgui\imgui.vcxproj", "{D6CC2483-1694-43AC-8B60-46EC1B23304B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW", "deps\GLFW\GLFW.vcxproj", "{BBD1C1FE-B55E-43EC-B8A6-DBEB45BA6824}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "deps\glfw\GLFW.vcxproj", "{BBD1C1FE-B55E-43EC-B8A6-DBEB45BA6824}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
