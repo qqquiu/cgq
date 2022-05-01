@@ -14,4 +14,4 @@
 
 #ifdef CGQ_PLATFORM_WINDOWS
 	#include <Windows.h>
-#endif
+#endif // CGQ_PLATFORM_WINDOWS

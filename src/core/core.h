@@ -1,6 +1,9 @@
 #pragma once
+#include <vulkan/vulkan.h>
 
-namespace cgq
+namespace CGQ
 {
+	void SetUITheme();
+	void Run(uint32_t frame, VkPhysicalDevice gpu);
 	void PrintMessage(std::string msg);
 }
