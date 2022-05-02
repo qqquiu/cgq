@@ -17,7 +17,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "deps\imgui\imgui.v
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "deps\glfw\bin\src\glfw.vcxproj", "{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "setup\Setup\Setup.vdproj", "{DBE9E9B1-62C7-44B1-AF76-0CFB515402C6}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,14 +79,22 @@ Global
 		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
 		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.RelWithDebInfo|x86.ActiveCfg = RelWithDebInfo|x64
 		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.RelWithDebInfo|x86.Build.0 = RelWithDebInfo|x64
-		{DBE9E9B1-62C7-44B1-AF76-0CFB515402C6}.Debug|x64.ActiveCfg = Debug
-		{DBE9E9B1-62C7-44B1-AF76-0CFB515402C6}.Debug|x86.ActiveCfg = Debug
-		{DBE9E9B1-62C7-44B1-AF76-0CFB515402C6}.MinSizeRel|x64.ActiveCfg = Debug
-		{DBE9E9B1-62C7-44B1-AF76-0CFB515402C6}.MinSizeRel|x86.ActiveCfg = Debug
-		{DBE9E9B1-62C7-44B1-AF76-0CFB515402C6}.Release|x64.ActiveCfg = Release
-		{DBE9E9B1-62C7-44B1-AF76-0CFB515402C6}.Release|x86.ActiveCfg = Release
-		{DBE9E9B1-62C7-44B1-AF76-0CFB515402C6}.RelWithDebInfo|x64.ActiveCfg = Release
-		{DBE9E9B1-62C7-44B1-AF76-0CFB515402C6}.RelWithDebInfo|x86.ActiveCfg = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Debug|x64.ActiveCfg = Debug
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Debug|x64.Build.0 = Debug
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Debug|x86.ActiveCfg = Debug
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Debug|x86.Build.0 = Debug
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.MinSizeRel|x64.ActiveCfg = Debug
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.MinSizeRel|x64.Build.0 = Debug
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.MinSizeRel|x86.ActiveCfg = Debug
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.MinSizeRel|x86.Build.0 = Debug
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Release|x64.ActiveCfg = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Release|x64.Build.0 = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Release|x86.ActiveCfg = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Release|x86.Build.0 = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.RelWithDebInfo|x64.ActiveCfg = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.RelWithDebInfo|x64.Build.0 = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.RelWithDebInfo|x86.ActiveCfg = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.RelWithDebInfo|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
