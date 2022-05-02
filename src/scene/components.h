@@ -2,11 +2,16 @@
 
 #include "math/vectors.h"
 
-namespace cgq
+namespace CGQ
 {
     struct TransformComponent
     {
         vec3 Transform;
+    };
+
+    struct TextComponent
+    {
+        //
     };
 
     struct ColorComponent
