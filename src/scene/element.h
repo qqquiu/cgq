@@ -1,5 +1,5 @@
 /*
- *  @file   element.h
+ *  @file   Element.h
  *
  *  @brief  (text, shapes, images, audio, etc)
  */
@@ -8,35 +8,35 @@
 
 #pragma once
 
-#include "pch.h"
-#include "math/vectors.h"
-#include "types.h"
+#include "Math/Vectors.h"
+#include "Types.h"
 
-static size_t el_count = 1;
-
-class CGElement
+namespace CGQ
 {
-public:
-    CGElement(EElementType);
-    CGElement(EElementType, std::string);
-    CGElement(const CGElement&);
+    class Element
+    {
+    public:
+        Element(EElementType);
+        Element(EElementType, std::string);
+        Element(const Element&);
 
-    std::string name();
-    std::string unique();
-    const char* c_str();
-    size_t id();
-    int duration();
-    bool visible();
-    bool locked();
+        std::string Name();
+        std::string Unique();
+        const char* CStr();
+        size_t ID();
+        int Duration();
+        bool IsVisible();
+        bool IsLocked();
 
-protected:
-    EElementType c_type = EElementType::NoType;
-    size_t c_id = 0;
+    protected:
+        EElementType c_Type = EElementType::None;
+        size_t c_ID = 0;
 
-    std::string m_name;
-    bool m_visible = true;
-    bool m_locked = false;
-    int m_duration = 0; // in frames
-private:
-    friend class CGManager;
-};
+        std::string m_Name;
+        bool m_Visible = true;
+        bool m_Locked = false;
+        int m_Duration = 0; // in frames
+    private:
+        friend class Manager;
+    };
+}

@@ -5,3 +5,6 @@
 [submodule "deps/glfw"]
 	path = deps/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "deps/entt"]
+	path = deps/entt
+	url = https://github.com/skypjack/entt.git

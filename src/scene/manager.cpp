@@ -1,168 +1,174 @@
 #include "pch.h"
-#include "manager.h"
+#include "Manager.h"
 
-// Create a new CGGraphic instance and add it to library
-void CGManager::gfx_add()
+namespace CGQ
 {
-    std::string s = "Graphic " + std::to_string(gfx_count);
+    uint64_t g_GraphicCount = 0;
+    uint64_t g_ElementCount = 0;
 
-    m_library.add(CGGraphic{s});
-    m_graphic = m_library.get();
-    m_element = nullptr;
-}
-
-// Remove currently selected graphic
-void CGManager::gfx_remove()
-{
-    m_library.pop();
-    m_graphic = m_library.get();
-    m_element = m_graphic ? m_graphic->get() : nullptr;
-}
-
-// Duplicate currently selected graphic
-void CGManager::gfx_duplicate()
-{
-    m_library.add(CGGraphic{*m_graphic});
-    m_graphic = m_library.get();
-    m_element = m_graphic->get();
-}
-
-// Rename currently selected graphic
-void CGManager::gfx_rename(std::string s)
-{
-    m_graphic->m_name = s;
-}
-
-// Number of graphics in library
-size_t CGManager::n_gfx()
-{
-    return m_library.graphics();
-}
-
-// Get currently selected graphic
-CGGraphic* CGManager::gfx()
-{
-    return m_graphic;
-}
-
-// Get graphic by index
-CGGraphic* CGManager::gfx(size_t i)
-{
-    return m_library.get(i);
-}
-
-// Get selected graphic index
-size_t CGManager::gfx_idx()
-{
-    return m_library.idx();
-}
-
-// Select graphic by index
-void CGManager::select_gfx(size_t i)
-{
-    m_library.m_gfx_idx = i;
-    m_graphic = m_library.get();
-    m_element = m_graphic ? m_graphic->get() : nullptr;
-}
-
-void CGManager::deselect_gfx()
-{
-    //m_graphic = nullptr;
-}
-
-// Create new child-of-CGElement instance and pass it to currently selected graphic
-void CGManager::el_add(EElementType type)
-{
-    std::string s = "Element " + std::to_string(el_count);
-    std::string tmp_type; // DEBUG
-    switch (type)
+    // Create a new Graphic instance and add it to library
+    void Manager::AddGraphic()
     {
-    case EElementType::NoType:
+        std::string s = "Graphic " + std::to_string(g_GraphicCount);
+
+        m_Library.Add(Graphic{ s });
+        m_Graphic = m_Library.Get();
+        m_Element = nullptr;
+    }
+
+    // Remove currently selected graphic
+    void Manager::RemoveGraphic()
     {
-        
-        tmp_type = "(No Type)";
-        
-        break;
+        m_Library.Pop();
+        m_Graphic = m_Library.Get();
+        m_Element = m_Graphic ? m_Graphic->Get() : nullptr;
     }
-    case EElementType::Text:
+
+    // Duplicate currently selected graphic
+    void Manager::DuplicateGraphic()
     {
-        tmp_type = "(Text)";
-        break;
+        m_Library.Add(Graphic{ *m_Graphic });
+        m_Graphic = m_Library.Get();
+        m_Element = m_Graphic->Get();
     }
-    case EElementType::Img:
+
+    // Rename currently selected graphic
+    void Manager::RenameGraphic(std::string s)
     {
-        tmp_type = "(Image)";
-        break;
+        m_Graphic->m_Name = s;
     }
-    case EElementType::ImgSeq:
+
+    // Number of graphics in library
+    size_t Manager::GraphicCount()
     {
-        tmp_type = "(Image Sequence)";
-        break;
+        return m_Library.Graphics();
     }
-    case EElementType::Audio:
+
+    // Get currently selected graphic
+    Graphic* Manager::GetGraphic()
     {
-        tmp_type = "(Audio)";
-        break;
+        return m_Graphic;
     }
-    default:
+
+    // Get graphic by index
+    Graphic* Manager::GetGraphic(size_t i)
     {
-        tmp_type = "(Invalid)";
+        return m_Library.Get(i);
     }
+
+    // Get selected graphic index
+    size_t Manager::GraphicIndex()
+    {
+        return m_Library.Index();
     }
-    std::string e_name = s + " " + tmp_type;
-    CGElement e = { type, e_name };
 
-    m_graphic->add(e);
-    m_element = m_graphic->get();
-}
+    // Select graphic by index
+    void Manager::SelectGraphic(size_t i)
+    {
+        m_Library.m_Index = i;
+        m_Graphic = m_Library.Get();
+        m_Element = m_Graphic ? m_Graphic->Get() : nullptr;
+    }
 
-// Remove element from currently selected graphic
-void CGManager::el_remove()
-{
-    m_graphic->pop();
-    m_element = m_graphic->get();
-}
+    void Manager::DeselectGraphic()
+    {
+        //m_graphic = nullptr;
+    }
 
-// Duplicate element inside current graphic
-void CGManager::el_duplicate()
-{
-    CGElement e{ *m_element };
-    m_graphic->add(e);
-    m_element = m_graphic->get();
-}
+    // Create new child-of-Element instance and pass it to currently selected graphic
+    void Manager::AddElement(EElementType type)
+    {
+        std::string s = "Element " + std::to_string(g_ElementCount);
+        std::string tmp_type; // DEBUG
+        switch (type)
+        {
+        case EElementType::None:
+        {
 
-void CGManager::el_rename(std::string s)
-{
-    m_element->m_name = s;
-}
+            tmp_type = "(No Type)";
 
-size_t CGManager::n_el()
-{
-    return m_graphic->m_elements.size();
-}
+            break;
+        }
+        case EElementType::Text:
+        {
+            tmp_type = "(Text)";
+            break;
+        }
+        case EElementType::Img:
+        {
+            tmp_type = "(Image)";
+            break;
+        }
+        case EElementType::ImgSeq:
+        {
+            tmp_type = "(Image Sequence)";
+            break;
+        }
+        case EElementType::Audio:
+        {
+            tmp_type = "(Audio)";
+            break;
+        }
+        default:
+        {
+            tmp_type = "(Invalid)";
+        }
+        }
+        std::string e_name = s + " " + tmp_type;
+        Element e = { type, e_name };
 
-CGElement* CGManager::el()
-{
-    return m_element;
-}
+        m_Graphic->Add(e);
+        m_Element = m_Graphic->Get();
+    }
 
-CGElement* CGManager::el(size_t i)
-{
-    return &m_graphic->m_elements[i];
-}
+    // Remove element from currently selected graphic
+    void Manager::RemoveElement()
+    {
+        m_Graphic->Pop();
+        m_Element = m_Graphic->Get();
+    }
 
-size_t CGManager::el_idx()
-{
-    return m_graphic->idx();
-}
+    // Duplicate element inside current graphic
+    void Manager::DuplicateElement()
+    {
+        Element e{ *m_Element };
+        m_Graphic->Add(e);
+        m_Element = m_Graphic->Get();
+    }
 
-void CGManager::select_el(size_t i)
-{
-    m_graphic->m_el_idx = i;
-    m_element = m_graphic->get();
-}
+    void Manager::RenameElement(std::string s)
+    {
+        m_Element->m_Name = s;
+    }
 
-void CGManager::deselect_el()
-{
-    m_element = nullptr;
+    size_t Manager::ElementCount()
+    {
+        return m_Graphic->m_Elements.size();
+    }
+
+    Element* Manager::GetElement()
+    {
+        return m_Element;
+    }
+
+    Element* Manager::GetElement(size_t i)
+    {
+        return &m_Graphic->m_Elements[i];
+    }
+
+    size_t Manager::ElementIndex()
+    {
+        return m_Graphic->Index();
+    }
+
+    void Manager::SelectElement(size_t i)
+    {
+        m_Graphic->m_Index = i;
+        m_Element = m_Graphic->Get();
+    }
+
+    void Manager::DeselectElement()
+    {
+        m_Element = nullptr;
+    }
 }

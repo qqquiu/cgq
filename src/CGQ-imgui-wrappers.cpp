@@ -1,12 +1,9 @@
 #include "pch.h"
-#include "imgui.h"
-#include "imgui_internal.h"
-#include "math/vectors.h"
-#include "cgq-wrappers.h"
+#include "CGQ-imgui-wrappers.h"
 
-namespace CGQ
+namespace CGQ::IMGUI
 {
-    static void PushMultiItemsWidthsAndLabels(vec3 vector, float w_full)
+    void PushMultiItemsWidthsAndLabels(vec3 vector, float w_full)
     {
         ImGuiWindow* window = ImGui::GetCurrentWindow();
         const ImGuiStyle& style = GImGui->Style;

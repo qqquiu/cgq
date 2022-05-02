@@ -1,64 +1,69 @@
 #include "pch.h"
-#include "element.h"
+#include "Element.h"
 
-CGElement::CGElement(EElementType e)
-    : c_type{ e }, c_id{ el_count }
+namespace CGQ
 {
-    el_count++;
-}
+    extern uint64_t g_ElementCount;
 
-CGElement::CGElement(EElementType e, std::string s)
-    : c_type{ e }, c_id{ el_count }, m_name{ s }
-{
-    el_count++;
-}
+    Element::Element(EElementType e)
+        : c_Type{ e }, c_ID{ g_ElementCount }
+    {
+        ++g_ElementCount;
+    }
 
-CGElement::CGElement(const CGElement& el)
-    :
-    c_type { el.c_type },
-    c_id { el_count },
-    m_name { el.m_name },
-    m_visible { el.m_visible },
-    m_locked { el.m_locked },
-    m_duration { el.m_duration }
-{
-    el_count++;
-}
+    Element::Element(EElementType e, std::string s)
+        : c_Type{ e }, c_ID{ g_ElementCount }, m_Name{ s }
+    {
+        ++g_ElementCount;
+    }
 
-std::string CGElement::name()
-{
-    return m_name;
-}
+    Element::Element(const Element& el)
+        :
+        c_Type{ el.c_Type },
+        c_ID{ g_ElementCount },
+        m_Name{ el.m_Name },
+        m_Visible{ el.m_Visible },
+        m_Locked{ el.m_Locked },
+        m_Duration{ el.m_Duration }
+    {
+        ++g_ElementCount;
+    }
 
-std::string CGElement::unique()
-{
-    std::string str = m_name;
-    str += "###";
-    str += std::to_string(c_id);
-    return str;
-}
+    std::string Element::Name()
+    {
+        return m_Name;
+    }
 
-const char* CGElement::c_str()
-{
-    return m_name.c_str();
-}
+    std::string Element::Unique()
+    {
+        std::string str = m_Name;
+        str += "###";
+        str += std::to_string(c_ID);
+        return str;
+    }
 
-size_t CGElement::id()
-{
-    return c_id;
-}
+    const char* Element::CStr()
+    {
+        return m_Name.c_str();
+    }
 
-int CGElement::duration()
-{
-    return m_duration;
-}
+    size_t Element::ID()
+    {
+        return c_ID;
+    }
 
-bool CGElement::visible()
-{
-    return m_visible;
-}
+    int Element::Duration()
+    {
+        return m_Duration;
+    }
 
-bool CGElement::locked()
-{
-    return m_locked;
+    bool Element::IsVisible()
+    {
+        return m_Visible;
+    }
+
+    bool Element::IsLocked()
+    {
+        return m_Locked;
+    }
 }

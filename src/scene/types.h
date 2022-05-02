@@ -1,14 +1,14 @@
 /*
- *  @file   types.h
+ *  @file   Types.h
  *
- *  @brief  Self-explanatory enum to help identify element types
+ *  @brief  Self-explanatory enum to help identify Element type (Text, Audio, Image, etc)
  */
 
 #pragma once
 
 enum class EElementType
 {
-    NoType = 0,
+    None = 0,
     Text,
     Img,
     ImgSeq,

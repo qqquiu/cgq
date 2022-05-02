@@ -10,37 +10,37 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
+    <ClCompile Include="src\Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\core.cpp">
+    <ClCompile Include="src\Core\Core.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\ui.cpp">
+    <ClCompile Include="src\Core\UI.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\framerate.cpp">
+    <ClCompile Include="src\Math\Framerate.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\etc\cgq-wrappers.cpp">
+    <ClCompile Include="src\CGQ-imgui-wrappers.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\element.cpp">
+    <ClCompile Include="src\Scene\Element.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\types.cpp">
+    <ClCompile Include="src\Scene\Types.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\graphic.cpp">
+    <ClCompile Include="src\Scene\Graphic.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\library.cpp">
+    <ClCompile Include="src\Scene\Library.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\manager.cpp">
+    <ClCompile Include="src\Scene\Manager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,43 +48,43 @@
     <ClInclude Include="src\pch.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\core.h">
+    <ClInclude Include="src\Core\Core.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\components.h">
+    <ClInclude Include="src\Scene\Components.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\element.h">
+    <ClInclude Include="src\Scene\Element.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\types.h">
+    <ClInclude Include="src\Scene\Types.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\framerate.h">
+    <ClInclude Include="src\Math\Framerate.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\graphic.h">
+    <ClInclude Include="src\Scene\Graphic.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\etc\cgq-wrappers.h">
+    <ClInclude Include="src\CGQ-imgui-wrappers.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\keyframe.h">
+    <ClInclude Include="src\Scene\Keyframe.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\library.h">
+    <ClInclude Include="src\Scene\Library.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\manager.h">
+    <ClInclude Include="src\Scene\Manager.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\scene.h">
+    <ClInclude Include="src\Scene\Scene.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\ui.h">
+    <ClInclude Include="src\Core\UI.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\vectors.h">
+    <ClInclude Include="src\Math\Vectors.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

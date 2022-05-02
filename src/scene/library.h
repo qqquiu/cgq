@@ -6,31 +6,29 @@
  */
 
 #pragma once
-#include "pch.h"
-#include "graphic.h"
+#include "Graphic.h"
 
-class CGLibrary
+namespace CGQ
 {
-public:
-    CGLibrary(const CGManager* m)
-        : c_ptr(m)
+    class Library
     {
-        m_graphics.reserve(static_cast<size_t>(16));
-    }
+    public:
+        Library(const Manager* m);
 
-    size_t graphics();
-    size_t idx();
+        size_t Graphics();
+        size_t Index();
 
-private:
-    friend class CGManager;
+    private:
+        friend class Manager;
 
-    const CGManager* c_ptr;
-    size_t m_gfx_idx = static_cast<size_t>(-1);
-    
-    std::vector<CGGraphic> m_graphics;
+        const Manager* c_ManagerPtr;
+        size_t m_Index = static_cast<size_t>(-1);
 
-    CGGraphic* get();
-    CGGraphic* get(size_t);
-    void pop();
-    void add(CGGraphic);
-};
+        std::vector<Graphic> m_Graphics;
+
+        Graphic* Get();
+        Graphic* Get(size_t);
+        void Pop();
+        void Add(Graphic);
+    };
+}

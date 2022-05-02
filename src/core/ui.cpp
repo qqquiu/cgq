@@ -1,14 +1,7 @@
 #include "pch.h"
 #include "ui.h"
 
-#include "imgui.h"
-#include "imgui_internal.h"
-#include "imgui_impl_vulkan.h"
-
-#include "etc/cgq-wrappers.h"
-
-
-namespace UI
+namespace CGQ::UI
 {
     const char* window_editor = "Viewport###Viewport";
     const char* window_preview = "Preview###Preview";
@@ -71,7 +64,7 @@ namespace UI
     }
 
     // Called every frame to render the windows
-    void Render(uint32_t frame, VkPhysicalDevice gpu, CGManager* manager)
+    void Render(uint32_t frame, VkPhysicalDevice gpu, Manager* manager)
     {
         InitDockspace();
         DebugWindows();
@@ -233,9 +226,9 @@ namespace UI
     }
 
     // Current project's graphics library
-    void GraphicsWindow(CGManager* m)
+    void GraphicsWindow(Manager* m)
     {
-        size_t total_gfx = m->n_gfx();
+        size_t total_gfx = m->GraphicCount();
 
         if (ImGui::Begin(window_gfx_lib))
         {
@@ -246,36 +239,36 @@ namespace UI
                 {
                     if (ImGui::MenuItem("New graphic###AddGraphicButton"))
                     {
-                        m->gfx_add();
+                        m->AddGraphic();
                     }
                     ImGui::EndPopup();
                 }
                 for (int i = 0; i < total_gfx; i++)
                 {
-                    const bool selected = (m->gfx_idx() == i);
-                    CGGraphic* g = m->gfx(i);
-                    if (ImGui::Selectable(g->unique().c_str(), selected))
+                    const bool selected = (m->GraphicIndex() == i);
+                    Graphic* g = m->GetGraphic(i);
+                    if (ImGui::Selectable(g->Unique().c_str(), selected))
                     {
-                        m->select_gfx(i);
+                        m->SelectGraphic(i);
                     }
 
                     if (ImGui::BeginPopupContextItem())
                     {
-                        m->select_gfx(i);
-                        ImGui::MenuItem(g->unique().c_str(), NULL, false, false);
+                        m->SelectGraphic(i);
+                        ImGui::MenuItem(g->Unique().c_str(), NULL, false, false);
                         ImGui::Separator();
                         if (ImGui::MenuItem("Rename###RenameGraphic", "F2"))
                         {
-                            m->gfx_rename("Renamed!");
+                            m->RenameGraphic("Renamed!");
                         }
                         if (ImGui::MenuItem("Duplicate###DuplicateGraphic", "Ctrl+D"))
                         {
-                            m->gfx_duplicate();
+                            m->DuplicateGraphic();
                         }
                         if (ImGui::MenuItem("Delete###DeleteGraphic", "Del"))
                         {
-                            m->gfx_remove();
-                            total_gfx = m->n_gfx();
+                            m->RemoveGraphic();
+                            total_gfx = m->GraphicCount();
                         }
                         ImGui::EndPopup();
                     }
@@ -288,15 +281,15 @@ namespace UI
     }
 
     // Elements (text, shape, image, etc) of currently selected graphic
-    void ElementsWindow(CGManager* m)
+    void ElementsWindow(Manager* m)
     {
-        std::string el_window_title = m->gfx() ? m->gfx()->name() + "###ElementsWindow" : "Elements###ElementsWindow";
+        std::string el_window_title = m->GetGraphic() ? m->GetGraphic()->Name() + "###ElementsWindow" : "Elements###ElementsWindow";
         if (ImGui::Begin(el_window_title.c_str()))
         {
             float p_w = ImGui::GetWindowWidth();
             float p_h = ImGui::GetWindowHeight();
 
-            if (!m->gfx())
+            if (!m->GetGraphic())
             {
                 ImGui::TextDisabled("Select a graphic to edit its properties and elements."); // todo: center to screen
             }
@@ -327,26 +320,26 @@ namespace UI
     }
 
     // Property editor of the currently selected asset
-    void PropertiesWindow(CGManager* m)
+    void PropertiesWindow(Manager* m)
     {
         ImGui::Begin(window_item_prop);
 
-        if (!m->el())   // No element selected
+        if (!m->GetElement())   // No element selected
         {
             ImGui::TextDisabled("No element selected.");
             // show graphics stuff instead?
         }
         else
         {
-            CGElement* el = m->el();
+            Element* el = m->GetElement();
             if (ImGui::CollapsingHeader("Information", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow))
             {
                 ImGui::TextDisabled("Name:\t");
                 ImGui::SameLine();
-                ImGui::TextDisabled(el->name().c_str());
+                ImGui::TextDisabled(el->Name().c_str());
                 ImGui::TextDisabled("ID:\t");
                 ImGui::SameLine();
-                ImGui::TextDisabled("%d", el->id());
+                ImGui::TextDisabled("%d", el->ID());
             }
             ImGui::Spacing();
             // test if element is of type visual or audio

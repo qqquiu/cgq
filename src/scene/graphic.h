@@ -7,38 +7,38 @@
 
 #pragma once
 
-#include "pch.h"
-#include "element.h"
+#include "Element.h"
 
-static size_t gfx_count = 1;
-
-class CGGraphic
+namespace CGQ
 {
-public:
-    explicit CGGraphic();
-    explicit CGGraphic(std::string);
-    explicit CGGraphic(const CGGraphic&);
+    class Graphic
+    {
+    public:
+        explicit Graphic();
+        explicit Graphic(std::string);
+        explicit Graphic(const Graphic&);
 
-    std::string name();
-    std::string unique();
-    const char* cstr();
-    size_t id();
-    size_t elements();
-    size_t idx();
-    // todo: thumbnail ?
+        std::string Name();
+        std::string Unique();
+        const char* CStr();
+        size_t ID();
+        size_t Elements();
+        size_t Index();
+        // todo: thumbnail ?
 
-private:
-    friend class CGManager;
+    private:
+        friend class Manager;
 
-    size_t c_id;
-    size_t m_el_idx = static_cast<size_t>(-1);
+        size_t c_ID;
+        size_t m_Index = static_cast<size_t>(-1);
 
-    std::string m_name;
-    std::vector<CGElement> m_elements;
-    int duration = 60;
+        std::string m_Name;
+        std::vector<Element> m_Elements;
+        int m_Duration = 60;
 
-    CGElement* get();
-    CGElement* get(size_t);
-    void pop();
-    void add(CGElement);
-};
+        Element* Get();
+        Element* Get(size_t);
+        void Pop();
+        void Add(Element);
+    };
+}

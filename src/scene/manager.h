@@ -7,38 +7,40 @@
 
 #pragma once
 
-#include "pch.h"
-#include "library.h"
+#include "Library.h"
 
-class CGManager
+namespace CGQ
 {
-public:
-    // Graphics
-    void        gfx_add();
-    void        gfx_remove();
-    void        gfx_duplicate();
-    void        gfx_rename(std::string);
-    size_t      n_gfx();
-    CGGraphic*  gfx();
-    CGGraphic*  gfx(size_t);
-    size_t      gfx_idx();
-    void        select_gfx(size_t);
-    void        deselect_gfx();
+    class Manager
+    {
+    public:
+        // Graphics
+        void        AddGraphic();
+        void        RemoveGraphic();
+        void        DuplicateGraphic();
+        void        RenameGraphic(std::string);
+        size_t      GraphicCount();
+        Graphic*    GetGraphic();
+        Graphic*    GetGraphic(size_t);
+        size_t      GraphicIndex();
+        void        SelectGraphic(size_t);
+        void        DeselectGraphic();
 
-    // Elements
-    void        el_add(EElementType);
-    void        el_remove();
-    void        el_duplicate();
-    void        el_rename(std::string);
-    size_t      n_el();
-    CGElement*  el();
-    CGElement*  el(size_t);
-    size_t      el_idx();
-    void        select_el(size_t);
-    void        deselect_el();
+        // Elements
+        void        AddElement(EElementType);
+        void        RemoveElement();
+        void        DuplicateElement();
+        void        RenameElement(std::string);
+        size_t      ElementCount();
+        Element*    GetElement();
+        Element*    GetElement(size_t);
+        size_t      ElementIndex();
+        void        SelectElement(size_t);
+        void        DeselectElement();
 
-private:
-    CGLibrary  m_library = { this };
-    CGGraphic* m_graphic = nullptr;
-    CGElement* m_element = nullptr;
-};
+    private:
+        Library  m_Library = { this };
+        Graphic* m_Graphic = nullptr;
+        Element* m_Element = nullptr;
+    };
+}

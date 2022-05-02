@@ -175,38 +175,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\framerate.cpp" />
-    <ClCompile Include="src\core\ui.cpp" />
-    <ClCompile Include="src\etc\cgq-wrappers.cpp" />
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Math\Framerate.cpp" />
+    <ClCompile Include="src\Core\UI.cpp" />
+    <ClCompile Include="src\CGQ-imgui-wrappers.cpp" />
+    <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\core\core.cpp" />
-    <ClCompile Include="src\scene\element.cpp" />
-    <ClCompile Include="src\scene\types.cpp" />
-    <ClCompile Include="src\scene\graphic.cpp" />
-    <ClCompile Include="src\scene\library.cpp" />
-    <ClCompile Include="src\scene\manager.cpp" />
+    <ClCompile Include="src\Core\Core.cpp" />
+    <ClCompile Include="src\Scene\Element.cpp" />
+    <ClCompile Include="src\Scene\Types.cpp" />
+    <ClCompile Include="src\Scene\Graphic.cpp" />
+    <ClCompile Include="src\Scene\Library.cpp" />
+    <ClCompile Include="src\Scene\Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\core\framerate.h" />
-    <ClInclude Include="src\core\ui.h" />
-    <ClInclude Include="src\etc\cgq-wrappers.h" />
-    <ClInclude Include="src\math\vectors.h" />
+    <ClInclude Include="src\Math\Framerate.h" />
+    <ClInclude Include="src\Core\UI.h" />
+    <ClInclude Include="src\CGQ-imgui-wrappers.h" />
+    <ClInclude Include="src\Math\Vectors.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\core\core.h" />
-    <ClInclude Include="src\scene\components.h" />
-    <ClInclude Include="src\scene\element.h" />
-    <ClInclude Include="src\scene\types.h" />
-    <ClInclude Include="src\scene\graphic.h" />
-    <ClInclude Include="src\scene\keyframe.h" />
-    <ClInclude Include="src\scene\library.h" />
-    <ClInclude Include="src\scene\manager.h" />
-    <ClInclude Include="src\scene\scene.h" />
+    <ClInclude Include="src\Core\Core.h" />
+    <ClInclude Include="src\Scene\Components.h" />
+    <ClInclude Include="src\Scene\Element.h" />
+    <ClInclude Include="src\Scene\Types.h" />
+    <ClInclude Include="src\Scene\Graphic.h" />
+    <ClInclude Include="src\Scene\Keyframe.h" />
+    <ClInclude Include="src\Scene\Library.h" />
+    <ClInclude Include="src\Scene\Manager.h" />
+    <ClInclude Include="src\Scene\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="deps\glfw\bin\src\glfw.vcxproj">

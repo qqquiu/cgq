@@ -5,7 +5,7 @@ const char* el_type_to_cstr(EElementType e)
 {
     switch (e)
     {
-    case EElementType::NoType: return "NO TYPE";
+    case EElementType::None: return "NO TYPE";
     case EElementType::Text: return "TEXT";
     case EElementType::Img: return "IMAGE";
     case EElementType::ImgSeq: return "IMAGE SEQUENCE";

@@ -1,51 +1,60 @@
 #include "pch.h"
-#include "library.h"
+#include "Library.h"
 
-size_t CGLibrary::idx()
+namespace CGQ
 {
-    return m_gfx_idx;
-}
-
-size_t CGLibrary::graphics()
-{
-    return m_graphics.size();
-}
-
-CGGraphic* CGLibrary::get()
-{
-    return graphics() ? &m_graphics[m_gfx_idx] : nullptr;
-}
-
-CGGraphic* CGLibrary::get(size_t i)
-{
-    if (i < 0 || i >= graphics())
+    Library::Library(const Manager* m)
+        : c_ManagerPtr(m)
     {
-        return nullptr;
+        m_Graphics.reserve(static_cast<size_t>(16));
     }
-    else
-    {
-        m_gfx_idx = i;
-        return &m_graphics[i];
-    }
-}
 
-void CGLibrary::pop()
-{
-    m_graphics.erase(m_graphics.begin() + m_gfx_idx);
-
-    if ( graphics() )
+    size_t Library::Index()
     {
-        if (m_gfx_idx)
-            m_gfx_idx--;
+        return m_Index;
     }
-    else
-    {
-        m_gfx_idx = static_cast<size_t>(-1);
-    }
-}
 
-void CGLibrary::add(CGGraphic g)
-{
-    m_graphics.push_back(g);
-    m_gfx_idx = graphics() - 1;
+    size_t Library::Graphics()
+    {
+        return m_Graphics.size();
+    }
+
+    Graphic* Library::Get()
+    {
+        return Graphics() ? &m_Graphics[m_Index] : nullptr;
+    }
+
+    Graphic* Library::Get(size_t i)
+    {
+        if (i < 0 || i >= Graphics())
+        {
+            return nullptr;
+        }
+        else
+        {
+            m_Index = i;
+            return &m_Graphics[i];
+        }
+    }
+
+    void Library::Pop()
+    {
+        m_Graphics.erase(m_Graphics.begin() + m_Index);
+
+        if (Graphics())
+        {
+            if (m_Index)
+                m_Index--;
+        }
+        else
+        {
+            m_Index = static_cast<size_t>(-1);
+        }
+    }
+
+    void Library::Add(Graphic g)
+    {
+        m_Graphics.push_back(g);
+        m_Index = Graphics() - 1;
+    }
 }
