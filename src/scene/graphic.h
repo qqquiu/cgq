@@ -39,6 +39,6 @@ namespace CGQ
         Element* Get();
         Element* Get(size_t);
         void Pop();
-        void Add(Element);
+        void Add(EElementType type);
     };
 }

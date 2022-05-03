@@ -280,11 +280,11 @@ namespace CGQ::UI
         ImGui::End();
     }
 
-    // Elements (text, shape, image, etc) of currently selected graphic
+    // Selected graphic's elements window & timeline
     void ElementsWindow(Manager* m)
     {
-        std::string el_window_title = m->GetGraphic() ? m->GetGraphic()->Name() + "###ElementsWindow" : "Elements###ElementsWindow";
-        if (ImGui::Begin(el_window_title.c_str()))
+        std::string WindowTitle = m->GetGraphic() ? m->GetGraphic()->Name() + "###ElementsWindow" : "Elements###ElementsWindow";
+        if (ImGui::Begin(WindowTitle.c_str()))
         {
             float p_w = ImGui::GetWindowWidth();
             float p_h = ImGui::GetWindowHeight();

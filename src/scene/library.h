@@ -10,6 +10,8 @@
 
 namespace CGQ
 {
+    class Manager;
+
     class Library
     {
     public:
@@ -27,8 +29,8 @@ namespace CGQ
         std::vector<Graphic> m_Graphics;
 
         Graphic* Get();
-        Graphic* Get(size_t);
+        Graphic* Get(size_t i);
         void Pop();
-        void Add(Graphic);
+        void Add();
     };
 }

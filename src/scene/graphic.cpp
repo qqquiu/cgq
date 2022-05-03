@@ -4,6 +4,7 @@
 namespace CGQ
 {
     extern uint64_t g_GraphicCount;
+    extern uint64_t g_ElementCount;
 
     Graphic::Graphic()
         : m_Name("Unnamed graphic ( " + std::to_string(g_GraphicCount) + ")"), c_ID(g_GraphicCount)
@@ -98,9 +99,10 @@ namespace CGQ
         }
     }
 
-    void Graphic::Add(Element e)
+    void Graphic::Add(EElementType type)
     {
-        m_Elements.push_back(e);
+        std::string str = "Element " + std::to_string(g_ElementCount);
+        m_Elements.emplace_back(type, str);
         m_Index = Elements() - 1;
     }
 }

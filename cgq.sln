@@ -19,27 +19,55 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "deps\glfw\bin\src\g
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnTT", "deps\entt\entt.vcxproj", "{2794137C-8095-444A-8F1E-77E2D4C76FFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F996EE47-9AC3-42D6-9C9C-A61326A430DE}.Debug|x64.ActiveCfg = Debug|x64
 		{F996EE47-9AC3-42D6-9C9C-A61326A430DE}.Debug|x64.Build.0 = Debug|x64
+		{F996EE47-9AC3-42D6-9C9C-A61326A430DE}.Debug|x86.ActiveCfg = Debug|Win32
+		{F996EE47-9AC3-42D6-9C9C-A61326A430DE}.Debug|x86.Build.0 = Debug|Win32
 		{F996EE47-9AC3-42D6-9C9C-A61326A430DE}.Release|x64.ActiveCfg = Release|x64
 		{F996EE47-9AC3-42D6-9C9C-A61326A430DE}.Release|x64.Build.0 = Release|x64
+		{F996EE47-9AC3-42D6-9C9C-A61326A430DE}.Release|x86.ActiveCfg = Release|Win32
+		{F996EE47-9AC3-42D6-9C9C-A61326A430DE}.Release|x86.Build.0 = Release|Win32
 		{D6CC2483-1694-43AC-8B60-46EC1B23304B}.Debug|x64.ActiveCfg = Debug|x64
 		{D6CC2483-1694-43AC-8B60-46EC1B23304B}.Debug|x64.Build.0 = Debug|x64
+		{D6CC2483-1694-43AC-8B60-46EC1B23304B}.Debug|x86.ActiveCfg = Debug|Win32
+		{D6CC2483-1694-43AC-8B60-46EC1B23304B}.Debug|x86.Build.0 = Debug|Win32
 		{D6CC2483-1694-43AC-8B60-46EC1B23304B}.Release|x64.ActiveCfg = Release|x64
 		{D6CC2483-1694-43AC-8B60-46EC1B23304B}.Release|x64.Build.0 = Release|x64
+		{D6CC2483-1694-43AC-8B60-46EC1B23304B}.Release|x86.ActiveCfg = Release|Win32
+		{D6CC2483-1694-43AC-8B60-46EC1B23304B}.Release|x86.Build.0 = Release|Win32
 		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.Debug|x64.ActiveCfg = Debug|x64
 		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.Debug|x64.Build.0 = Debug|x64
+		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.Debug|x86.ActiveCfg = Debug|x64
+		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.Debug|x86.Build.0 = Debug|x64
 		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.Release|x64.ActiveCfg = Release|x64
 		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.Release|x64.Build.0 = Release|x64
+		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.Release|x86.ActiveCfg = Release|x64
+		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF}.Release|x86.Build.0 = Release|x64
 		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Debug|x64.ActiveCfg = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Debug|x86.ActiveCfg = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Debug|x86.Build.0 = Release
 		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Release|x64.ActiveCfg = Release
 		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Release|x64.Build.0 = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Release|x86.ActiveCfg = Release
+		{A80A8C2B-6BB0-42A7-851D-8887C9FC839B}.Release|x86.Build.0 = Release
+		{2794137C-8095-444A-8F1E-77E2D4C76FFB}.Debug|x64.ActiveCfg = Debug|x64
+		{2794137C-8095-444A-8F1E-77E2D4C76FFB}.Debug|x64.Build.0 = Debug|x64
+		{2794137C-8095-444A-8F1E-77E2D4C76FFB}.Debug|x86.ActiveCfg = Debug|Win32
+		{2794137C-8095-444A-8F1E-77E2D4C76FFB}.Debug|x86.Build.0 = Debug|Win32
+		{2794137C-8095-444A-8F1E-77E2D4C76FFB}.Release|x64.ActiveCfg = Release|x64
+		{2794137C-8095-444A-8F1E-77E2D4C76FFB}.Release|x64.Build.0 = Release|x64
+		{2794137C-8095-444A-8F1E-77E2D4C76FFB}.Release|x86.ActiveCfg = Release|Win32
+		{2794137C-8095-444A-8F1E-77E2D4C76FFB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +75,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D6CC2483-1694-43AC-8B60-46EC1B23304B} = {894E0707-E247-4F4E-A4E1-88304F5B05E8}
 		{FE004B37-E75E-3527-80E2-D58C4C9CEBCF} = {894E0707-E247-4F4E-A4E1-88304F5B05E8}
+		{2794137C-8095-444A-8F1E-77E2D4C76FFB} = {894E0707-E247-4F4E-A4E1-88304F5B05E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {41D579EC-7BD6-4B5B-9036-2931E0458F23}

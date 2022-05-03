@@ -9,9 +9,7 @@ namespace CGQ
     // Create a new Graphic instance and add it to library
     void Manager::AddGraphic()
     {
-        std::string s = "Graphic " + std::to_string(g_GraphicCount);
-
-        m_Library.Add(Graphic{ s });
+        m_Library.Add();
         m_Graphic = m_Library.Get();
         m_Element = nullptr;
     }
@@ -26,8 +24,8 @@ namespace CGQ
 
     // Duplicate currently selected graphic
     void Manager::DuplicateGraphic()
-    {
-        m_Library.Add(Graphic{ *m_Graphic });
+    {   
+        m_Library.Add();
         m_Graphic = m_Library.Get();
         m_Element = m_Graphic->Get();
     }
@@ -115,9 +113,8 @@ namespace CGQ
         }
         }
         std::string e_name = s + " " + tmp_type;
-        Element e = { type, e_name };
 
-        m_Graphic->Add(e);
+        m_Graphic->Add(type);
         m_Element = m_Graphic->Get();
     }
 
@@ -131,8 +128,7 @@ namespace CGQ
     // Duplicate element inside current graphic
     void Manager::DuplicateElement()
     {
-        Element e{ *m_Element };
-        m_Graphic->Add(e);
+        m_Graphic->Add(m_Element->c_Type);
         m_Element = m_Graphic->Get();
     }
 

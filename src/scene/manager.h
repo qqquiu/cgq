@@ -1,5 +1,5 @@
 /*
- *  @file   manager.h
+ *  @file   Manager.h
  *
  *  @brief  Singleton to creates and manage instances of graphics and elements.
  *          Any data access should go through this class.

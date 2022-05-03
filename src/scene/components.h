@@ -1,12 +1,18 @@
+/*
+ *  @file   Components.h
+ *
+ *  @brief  todo
+ */
+
 #pragma once
 
-#include "Math/Vectors.h"
+#include "Core/MathLib.h"
 
 namespace CGQ
 {
     struct TransformComponent
     {
-        vec3 Transform;
+        Math::mat4 Transform;
     };
 
     struct TextComponent
@@ -16,7 +22,8 @@ namespace CGQ
 
     struct ColorComponent
     {
-        vec4 Color { 1.0f, 1.0f, 1.0f, 1.0f };
+        Math::vec4 Color { 1.0f, 1.0f, 1.0f, 1.0f };
+        float Opacity = 1.f; // not necessary?
     };
 
     struct ImgComponent

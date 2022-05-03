@@ -3,6 +3,8 @@
 
 namespace CGQ
 {
+    extern uint64_t g_GraphicCount;
+
     Library::Library(const Manager* m)
         : c_ManagerPtr(m)
     {
@@ -52,9 +54,10 @@ namespace CGQ
         }
     }
 
-    void Library::Add(Graphic g)
+    void Library::Add()
     {
-        m_Graphics.push_back(g);
+        std::string str = "Graphic " + std::to_string(g_GraphicCount);
+        m_Graphics.emplace_back(str);
         m_Index = Graphics() - 1;
     }
 }

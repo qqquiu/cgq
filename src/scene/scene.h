@@ -1,9 +1,8 @@
 /*
- *  @file   scene.h
+ *  @file   Scene.h
  *
  *  @brief  Definitions and functions for the viewport editor and playback output(s)
- *          such as width, height, fps. External output instance classes should
- *          also include this class.
+ *          such as width, height, fps.
  */
 
 #pragma once
@@ -17,5 +16,6 @@ namespace cgq
         int width = 1080;
         int fps_num = 60;
         int fps_den = 1;
+    private:
     };
 }

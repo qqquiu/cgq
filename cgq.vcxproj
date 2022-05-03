@@ -103,7 +103,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)deps\imgui;$(SolutionDir)deps\imgui\backends;$(SolutionDir)deps\glfw\include;%VULKAN_SDK%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)deps\imgui;$(SolutionDir)deps\imgui\backends;$(SolutionDir)deps\glfw\include;$(SolutionDir)deps\entt\single_include\entt;%VULKAN_SDK%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -123,7 +123,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)deps\imgui;$(SolutionDir)deps\imgui\backends;$(SolutionDir)deps\glfw\include;%VULKAN_SDK%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)deps\imgui;$(SolutionDir)deps\imgui\backends;$(SolutionDir)deps\glfw\include;$(SolutionDir)deps\entt\single_include\entt;%VULKAN_SDK%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,7 +141,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)deps\imgui;$(SolutionDir)deps\imgui\backends;$(SolutionDir)deps\glfw\include;%VULKAN_SDK%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)deps\imgui;$(SolutionDir)deps\imgui\backends;$(SolutionDir)deps\glfw\include;$(SolutionDir)deps\entt\single_include\entt;%VULKAN_SDK%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -161,7 +161,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)deps\imgui;$(SolutionDir)deps\imgui\backends;$(SolutionDir)deps\glfw\include;%VULKAN_SDK%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)deps\imgui;$(SolutionDir)deps\imgui\backends;$(SolutionDir)deps\glfw\include;$(SolutionDir)deps\entt\single_include\entt;%VULKAN_SDK%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -175,7 +175,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Math\Framerate.cpp" />
+    <ClCompile Include="src\Core\Framerate.cpp" />
     <ClCompile Include="src\Core\UI.cpp" />
     <ClCompile Include="src\CGQ-imgui-wrappers.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -193,10 +193,10 @@
     <ClCompile Include="src\Scene\Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Math\Framerate.h" />
+    <ClInclude Include="src\Core\Framerate.h" />
     <ClInclude Include="src\Core\UI.h" />
     <ClInclude Include="src\CGQ-imgui-wrappers.h" />
-    <ClInclude Include="src\Math\Vectors.h" />
+    <ClInclude Include="src\Core\MathLib.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Core\Core.h" />
     <ClInclude Include="src\Scene\Components.h" />
@@ -209,6 +209,9 @@
     <ClInclude Include="src\Scene\Scene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="deps\entt\entt.vcxproj">
+      <Project>{2794137c-8095-444a-8f1e-77e2d4c76ffb}</Project>
+    </ProjectReference>
     <ProjectReference Include="deps\glfw\bin\src\glfw.vcxproj">
       <Project>{fe004b37-e75e-3527-80e2-d58c4c9cebcf}</Project>
     </ProjectReference>

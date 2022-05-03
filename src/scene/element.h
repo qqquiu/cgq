@@ -8,8 +8,10 @@
 
 #pragma once
 
-#include "Math/Vectors.h"
+#include "Math.h"
 #include "Types.h"
+#include "Components.h"
+#include "entt.hpp"
 
 namespace CGQ
 {
@@ -17,7 +19,6 @@ namespace CGQ
     {
     public:
         Element(EElementType);
-        Element(EElementType, std::string);
         Element(const Element&);
 
         std::string Name();
@@ -30,6 +31,7 @@ namespace CGQ
 
     protected:
         EElementType c_Type = EElementType::None;
+//        std::vector<Component> m_Components;
         size_t c_ID = 0;
 
         std::string m_Name;
@@ -38,5 +40,9 @@ namespace CGQ
         int m_Duration = 0; // in frames
     private:
         friend class Manager;
+
+        void ConstructorAux();
+
+        entt::registry m_Registry;
     };
 }

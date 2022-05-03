@@ -22,7 +22,7 @@
     <ClCompile Include="src\Core\UI.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\Math\Framerate.cpp">
+    <ClCompile Include="src\Core\Framerate.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\CGQ-imgui-wrappers.cpp">
@@ -60,7 +60,7 @@
     <ClInclude Include="src\Scene\Types.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\Math\Framerate.h">
+    <ClInclude Include="src\Core\Framerate.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene\Graphic.h">
@@ -84,7 +84,7 @@
     <ClInclude Include="src\Core\UI.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\Math\Vectors.h">
+    <ClInclude Include="src\Core\MathLib.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
