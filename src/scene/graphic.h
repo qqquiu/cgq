@@ -14,9 +14,10 @@ namespace CGQ
     class Graphic
     {
     public:
-        explicit Graphic();
-        explicit Graphic(std::string);
-        explicit Graphic(const Graphic&);
+        Graphic();
+        Graphic(const Graphic&) = default;
+
+        ~Graphic();
 
         std::string Name();
         std::string Unique();
@@ -28,6 +29,8 @@ namespace CGQ
 
     private:
         friend class Manager;
+
+        entt::registry m_Registry;
 
         size_t c_ID;
         size_t m_Index = static_cast<size_t>(-1);

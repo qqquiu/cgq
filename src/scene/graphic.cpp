@@ -7,30 +7,13 @@ namespace CGQ
     extern uint64_t g_ElementCount;
 
     Graphic::Graphic()
-        : m_Name("Unnamed graphic ( " + std::to_string(g_GraphicCount) + ")"), c_ID(g_GraphicCount)
     {
-        ++g_GraphicCount;
-        m_Elements.reserve(static_cast<size_t>(8));
-        std::cout << "Default constructor called." << std::endl;
+        entt::entity element = m_Registry.create();
     }
 
-    Graphic::Graphic(std::string s)
-        : m_Name(s), c_ID(g_GraphicCount)
+    Graphic::~Graphic()
     {
-        ++g_GraphicCount;
-        m_Elements.reserve(static_cast<size_t>(8));
-        std::cout << "String constructor called." << std::endl;
-    }
 
-    Graphic::Graphic(const Graphic& g)
-        :
-        m_Name(g.m_Name),
-        c_ID(g_GraphicCount),
-        m_Index(g.m_Index),
-        m_Elements(g.m_Elements)
-    {
-        ++g_GraphicCount;
-        std::cout << "Copy constructor called." << std::endl;
     }
 
     std::string Graphic::Name()
@@ -102,7 +85,7 @@ namespace CGQ
     void Graphic::Add(EElementType type)
     {
         std::string str = "Element " + std::to_string(g_ElementCount);
-        m_Elements.emplace_back(type, str);
+        m_Elements.emplace_back(type);
         m_Index = Elements() - 1;
     }
 }
