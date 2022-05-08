@@ -7,13 +7,26 @@
 #pragma once
 
 #include "Core/MathLib.h"
+#include "Graphic.h"
 
 namespace CGQ
 {
-    struct UIComponent
+    struct MetadataComponent
     {
-        std::string Name = "Unnamed";
-        EElementType Type = EElementType::None;
+        std::string Name;
+        EElementType Type;
+        uint64_t Duration;
+        uint64_t ID;
+
+        MetadataComponent(EElementType type, Graphic* g)
+            : Type(type)
+        {
+            size_t count = g->Elements();
+            Name = "Element " + std::to_string(count);
+            Duration = 0;
+        }
+
+        MetadataComponent(const MetadataComponent&) = default;
     };
 
     struct TagComponent

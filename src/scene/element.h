@@ -16,41 +16,26 @@ namespace CGQ
     class Element
     {
     public:
-        Element(EElementType type);
+        Element(EElementType type, Graphic* owner);
         Element(const Element& element) = default;
+
+        ~Element() = default;
 
         std::string Name();
         std::string Unique();
-        const char* CStr();
-        size_t ID();
-        int Duration();
+        const char* c_str();
+        uint64_t ID();
+        uint64_t Duration();
         bool IsVisible();
         bool IsLocked();
 
-        template<typename T, typename... Args>
-        T& AddComponent(Args&&... args)
-        {
-            if (!HasComponent<T>)
-            {
-                T& component = m_Registry.emplace<T>(std::forward<Args>(args)...);
-                return component;
-            }
-        }
-
     protected:
-        EElementType c_Type = EElementType::None;
-        size_t c_ID = 0;
-
-        std::string m_Name;
         bool m_Visible = true;
         bool m_Locked = false;
-        int m_Duration = 0; // in frames
     private:
-        entt::entity m_EntityHandle = { entt::null };
         friend class Manager;
-
-        void ConstructorAux();
-
+        
+        entt::entity m_EntityHandle = { entt::null };
         entt::registry m_Registry;
     };
 }

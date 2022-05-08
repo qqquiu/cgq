@@ -5,77 +5,41 @@ namespace CGQ
 {
     extern uint64_t g_ElementCount;
 
-    Element::Element(EElementType type)
-        : c_Type{ type }, c_ID{ ++g_ElementCount }
+    Element::Element(EElementType type, Graphic* owner)
     {
-        entt::entity element = m_Registry.create();
+        m_EntityHandle = m_Registry.create();
 
-        switch (c_Type)
-        {
-        case EElementType::None:
-        default:
-            {
-                // shouldnt happen ever, so we do nothing
-                break;
-            }
-        case EElementType::Text:
-        {
-            m_Registry.emplace<TransformComponent>(element);
-            //m_Registry.emplace<TextComponent>(element);
-            m_Registry.emplace<ColorComponent>(element);
-            break;
-        }
-        case EElementType::Img:
-        {
-            m_Registry.emplace<TransformComponent>(element);
-            //m_Registry.emplace<ImgComponent>(element);
-            break;
-        }
-        case EElementType::ImgSeq:
-        {
-            m_Registry.emplace<TransformComponent>(element);
-            //m_Registry.emplace<ImgSequenceComponent>(element);
-            break;
-        }
-        case EElementType::Audio:
-        {
-            //m_Registry.emplace<AudioComponent>(element);
-            break;
-        }
-        }
-    }
-
-    void Element::ConstructorAux()
-    {
-
+        m_Registry.emplace<MetadataComponent>(m_EntityHandle, type, owner);
     }
 
     std::string Element::Name()
     {
-        return m_Name;
+        MetadataComponent& data = m_Registry.get<MetadataComponent>(m_EntityHandle);
+        return data.Name;
     }
 
     std::string Element::Unique()
     {
-        std::string str = m_Name;
-        str += "###";
-        str += std::to_string(c_ID);
-        return str;
+        MetadataComponent& data = m_Registry.get<MetadataComponent>(m_EntityHandle);
+        return data.Name + "###" + std::to_string(data.ID);
     }
 
-    const char* Element::CStr()
+    const char* Element::c_str()
     {
-        return m_Name.c_str();
+        MetadataComponent& data = m_Registry.get<MetadataComponent>(m_EntityHandle);
+        return data.Name.c_str();
     }
 
-    size_t Element::ID()
+    uint64_t Element::ID()
     {
-        return c_ID;
+        MetadataComponent& data = m_Registry.get<MetadataComponent>(m_EntityHandle);
+        return data.ID;
     }
 
-    int Element::Duration()
+    uint64_t Element::Duration()
     {
-        return m_Duration;
+        MetadataComponent& data = m_Registry.get<MetadataComponent>(m_EntityHandle);
+        return data.Duration;
     }
 
     bool Element::IsVisible()
