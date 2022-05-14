@@ -3,168 +3,146 @@
 
 namespace CGQ
 {
-    uint64_t g_GraphicCount = 0;
-    uint64_t g_ElementCount = 0;
-
-    // Create a new Graphic instance and add it to library
     void Manager::AddGraphic()
     {
-        m_Library.Add();
-        m_Graphic = m_Library.Get();
-        m_Element = nullptr;
+        GraphicData g_data {"New Graphic", 0};
+        Graphic g = {g_data, m_Registry.create(), this};
+        m_Graphics.push_back(g);
+        m_SelectedGraphicIndex = m_Graphics.size() - 1;
+        m_SelectedGraphic = &m_Graphics[m_SelectedGraphicIndex];
+        m_SelectedElement = nullptr;
     }
 
-    // Remove currently selected graphic
-    void Manager::RemoveGraphic()
-    {
-        m_Library.Pop();
-        m_Graphic = m_Library.Get();
-        m_Element = m_Graphic ? m_Graphic->Get() : nullptr;
-    }
-
-    // Duplicate currently selected graphic
     void Manager::DuplicateGraphic()
-    {   
-        m_Library.Add();
-        m_Graphic = m_Library.Get();
-        m_Element = m_Graphic->Get();
-    }
-
-    // Rename currently selected graphic
-    void Manager::RenameGraphic(std::string s)
     {
-        m_Graphic->m_Name = s;
+        /*
+        Graphic g = *m_SelectedGraphic;
+        GraphicData& data = m_Registry.get<GraphicData>(g.m_GraphicHandle);
+        g.m_GraphicHandle = m_Registry.create();
+        data.name += " (1)";
+        m_Graphics.push_back(g);
+        */
     }
 
-    // Number of graphics in library
+    void Manager::ImportGraphic()
+    {
+
+    }
+
+    void Manager::ExportGraphic()
+    {
+
+    }
+
+    void Manager::MoveGraphicUp()
+    {
+        if (m_SelectedGraphicIndex)
+            std::swap(m_Graphics[m_SelectedGraphicIndex], m_Graphics[m_SelectedGraphicIndex-1]);
+    }
+
+    void Manager::MoveGraphicDown()
+    {
+        if (!m_SelectedGraphicIndex)
+            std::swap(m_Graphics[m_SelectedGraphicIndex], m_Graphics[m_SelectedGraphicIndex + 1]);
+    }
+
+    void Manager::MoveGraphicTop()
+    {
+        // todo
+    }
+
+    void Manager::MoveGraphicBottom()
+    {
+        // todo
+    }
+
     size_t Manager::GraphicCount()
     {
-        return m_Library.Graphics();
+        return m_Graphics.size();
     }
 
-    // Get currently selected graphic
+    int Manager::GraphicIndex()
+    {
+        return m_SelectedGraphicIndex;
+    }
+
     Graphic* Manager::GetGraphic()
     {
-        return m_Graphic;
+        return m_SelectedGraphic;
     }
 
-    // Get graphic by index
-    Graphic* Manager::GetGraphic(size_t i)
+    Graphic* Manager::GetGraphic(int i)
     {
-        return m_Library.Get(i);
+        return &m_Graphics[i];
     }
 
-    // Get selected graphic index
-    size_t Manager::GraphicIndex()
+    void Manager::SelectGraphic(int i)
     {
-        return m_Library.Index();
+        m_SelectedGraphicIndex = i;
+        m_SelectedGraphic = &m_Graphics[m_SelectedGraphicIndex];
     }
 
-    // Select graphic by index
-    void Manager::SelectGraphic(size_t i)
+    void Manager::RenameGraphic(std::string newname)
     {
-        m_Library.m_Index = i;
-        m_Graphic = m_Library.Get();
-        m_Element = m_Graphic ? m_Graphic->Get() : nullptr;
+        GraphicData& g_data = m_Registry.get<GraphicData>(m_SelectedGraphic->m_GraphicHandle);
+        g_data.name = newname;
     }
 
-    void Manager::DeselectGraphic()
+    void Manager::RemoveGraphic()
     {
-        //m_graphic = nullptr;
+        m_Graphics.erase(m_Graphics.begin() + m_SelectedGraphicIndex);
     }
 
-    // Create new child-of-Element instance and pass it to currently selected graphic
-    void Manager::AddElement(EElementType type)
+    void Manager::AddElement(Type type)
     {
-        std::string s = "Element " + std::to_string(g_ElementCount);
-        std::string tmp_type; // DEBUG
-        switch (type)
-        {
-        case EElementType::None:
-        {
+        std::string name = type.ToString() + " " + std::to_string(m_SelectedGraphic->Elements());
+        GraphicData& g_data = m_Registry.get<GraphicData>(m_SelectedGraphic->m_GraphicHandle);
+        
+        ElementData el_data {type, name, g_data.duration};
 
-            tmp_type = "(No Type)";
+        Element el { el_data, m_Registry.create(), this};
 
-            break;
-        }
-        case EElementType::Text:
-        {
-            tmp_type = "(Text)";
-            break;
-        }
-        case EElementType::Img:
-        {
-            tmp_type = "(Image)";
-            break;
-        }
-        case EElementType::ImgSeq:
-        {
-            tmp_type = "(Image Sequence)";
-            break;
-        }
-        case EElementType::Audio:
-        {
-            tmp_type = "(Audio)";
-            break;
-        }
-        default:
-        {
-            tmp_type = "(Invalid)";
-        }
-        }
-        std::string e_name = s + " " + tmp_type;
-
-        m_Graphic->Add(type);
-        m_Element = m_Graphic->Get();
+        m_SelectedGraphic->m_Elements.push_back(el);
+        m_SelectedElement = nullptr;
     }
 
-    // Remove element from currently selected graphic
-    void Manager::RemoveElement()
-    {
-        m_Graphic->Pop();
-        m_Element = m_Graphic->Get();
-    }
-
-    // Duplicate element inside current graphic
     void Manager::DuplicateElement()
     {
-        m_Graphic->Add(m_Element->c_Type);
-        m_Element = m_Graphic->Get();
+        // todo
     }
 
-    void Manager::RenameElement(std::string s)
+    void Manager::MoveElementUp()
     {
-        m_Element->m_Name = s;
+        // todo
+    }
+
+    void Manager::MoveElementDown()
+    {
+        // todo
+    }
+
+    void Manager::MoveElementTop()
+    {
+        // todo
+    }
+
+    void Manager::MoveElementBottom()
+    {
+        // todo
     }
 
     size_t Manager::ElementCount()
     {
-        return m_Graphic->m_Elements.size();
+        return m_SelectedGraphic ? m_SelectedGraphic->m_Elements.size() : 0;
     }
 
     Element* Manager::GetElement()
     {
-        return m_Element;
+        return m_SelectedElement;
     }
 
-    Element* Manager::GetElement(size_t i)
+    entt::registry& Manager::Reg()
     {
-        return &m_Graphic->m_Elements[i];
-    }
-
-    size_t Manager::ElementIndex()
-    {
-        return m_Graphic->Index();
-    }
-
-    void Manager::SelectElement(size_t i)
-    {
-        m_Graphic->m_Index = i;
-        m_Element = m_Graphic->Get();
-    }
-
-    void Manager::DeselectElement()
-    {
-        m_Element = nullptr;
+        return m_Registry;
     }
 }

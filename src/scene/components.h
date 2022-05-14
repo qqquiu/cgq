@@ -2,31 +2,38 @@
  *  @file   Components.h
  *
  *  @brief  todo
+ * 
  */
 
 #pragma once
 
 #include "Core/MathLib.h"
-#include "Graphic.h"
 
 namespace CGQ
 {
-    struct MetadataComponent
+    struct GraphicData
     {
-        std::string Name;
-        EElementType Type;
-        uint64_t Duration;
-        uint64_t ID;
+        std::string name;
+        uint64_t duration;
+        
+        GraphicData(std::string n, uint64_t d)
+            : name(n), duration(d) {}
 
-        MetadataComponent(EElementType type, Graphic* g)
-            : Type(type)
-        {
-            size_t count = g->Elements();
-            Name = "Element " + std::to_string(count);
-            Duration = 0;
-        }
+        GraphicData(const GraphicData&) = default;
+    };
 
-        MetadataComponent(const MetadataComponent&) = default;
+    struct ElementData
+    {
+        Type type;
+        std::string name;
+        uint64_t duration;
+        bool isVisible;
+        bool isLocked;
+
+        ElementData(Type t, std::string n, uint64_t d)
+            : type(t), name(n), duration(d), isVisible(true), isLocked(false) {}
+
+        ElementData(const ElementData&) = default;
     };
 
     struct TagComponent

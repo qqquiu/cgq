@@ -1,41 +1,56 @@
 /*
  *  @file   Element.h
  *
- *  @brief  (text, shapes, images, audio, etc)
+ *  @brief  todo
+ * 
  */
 
 #pragma once
 
-#include "Core/MathLib.h"
+#include "entt.hpp"
 #include "Types.h"
 #include "Components.h"
-#include "entt.hpp"
 
 namespace CGQ
 {
+    class Manager;
+
     class Element
     {
     public:
-        Element(EElementType type, Graphic* owner);
+        Element() = delete;
+        Element(ElementData& data, entt::entity handle, Manager* manager);
         Element(const Element& element) = default;
-
         ~Element() = default;
 
         std::string Name();
+        uint32_t ID();
         std::string Unique();
         const char* c_str();
-        uint64_t ID();
         uint64_t Duration();
         bool IsVisible();
         bool IsLocked();
 
-    protected:
-        bool m_Visible = true;
-        bool m_Locked = false;
+        template<typename T, typename... Args>
+        T& AddComponent(Args&&... args);
+
+        template<typename T>
+        T& GetComponent();
+
+        template<typename T>
+        bool HasComponent();
+
+        template<typename T>
+        void RemoveComponent();
+
+        operator bool() const;
+
     private:
         friend class Manager;
-        
-        entt::entity m_EntityHandle = { entt::null };
-        entt::registry m_Registry;
+        Manager* m_Manager;
+
+        entt::entity m_ElementHandle = { entt::null };
+
+        ElementData& GetData();
     };
 }

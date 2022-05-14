@@ -8,7 +8,7 @@
 namespace CGQ
 {
 	Manager manager;
-
+	
 	void SetUITheme()
 	{
 		CGQ::UI::SetTheme();
@@ -16,7 +16,7 @@ namespace CGQ
 
 	void Run(uint32_t frame, VkPhysicalDevice gpu)
 	{
-		CGQ::UI::Render(frame, gpu, &manager);
+		CGQ::UI::Render(frame, gpu, manager);
 	}
 
 	void PrintMessage(std::string msg)

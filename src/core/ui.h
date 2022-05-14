@@ -11,14 +11,14 @@
 namespace CGQ::UI
 {
 	void SetTheme();
-	void Render(uint32_t frame, VkPhysicalDevice gpu, Manager* manager);
+	void Render(uint32_t frame, VkPhysicalDevice gpu, Manager& manager);
 	void InitDockspace();
 	void DebugWindows();
 	void EditorWindow(uint32_t frame);
 	void PreviewWindow();
-	void GraphicsWindow(Manager* manager);
-	void ElementsWindow(Manager* manager);
-	void PropertiesWindow(Manager* manager);
+	void GraphicsWindow(Manager& manager);
+	void ElementsWindow(Manager& manager);
+	void PropertiesWindow(Manager& manager);
 	void TimelineWindow();
 	void InformationWindow(VkPhysicalDevice gpu);
 }

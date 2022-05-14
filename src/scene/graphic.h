@@ -1,8 +1,8 @@
 /*
- *  @file   graphic.h
+ *  @file   Graphic.h
  *
- *  @brief  Collection of graphic elements or motion created in
- *          the editor and played back to outputs.
+ *  @brief  todo
+ * 
  */
 
 #pragma once
@@ -14,34 +14,29 @@ namespace CGQ
     class Graphic
     {
     public:
-        Graphic();
+        Graphic() = delete;
+        Graphic(GraphicData& data, entt::entity handle, Manager* manager);
         Graphic(const Graphic&) = default;
-
-        ~Graphic();
+        ~Graphic() = default;
 
         std::string Name();
+        uint32_t ID();
         std::string Unique();
-        const char* CStr();
-        size_t ID();
+        const char* c_str();
+        uint64_t Duration();
         size_t Elements();
-        size_t Index();
         // todo: thumbnail ?
+
+        operator bool() const;
 
     private:
         friend class Manager;
+        Manager* m_Manager = nullptr;
+        entt::entity m_GraphicHandle = { entt::null };
 
-        entt::registry m_Registry;
-
-        size_t c_ID;
-        size_t m_Index = static_cast<size_t>(-1);
-
-        std::string m_Name;
         std::vector<Element> m_Elements;
-        int m_Duration = 60;
+        int m_ElementIndex = { -1 };
 
-        Element* Get();
-        Element* Get(size_t);
-        void Pop();
-        void Add(EElementType type);
+        GraphicData& GetData();
     };
 }

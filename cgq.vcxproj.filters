@@ -37,9 +37,6 @@
     <ClCompile Include="src\Scene\Graphic.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene\Library.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\Scene\Manager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -70,9 +67,6 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene\Keyframe.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Scene\Library.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene\Manager.h">

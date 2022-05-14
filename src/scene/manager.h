@@ -1,46 +1,57 @@
 /*
  *  @file   Manager.h
  *
- *  @brief  Singleton to creates and manage instances of graphics and elements.
- *          Any data access should go through this class.
+ *  @brief  todo
+ * 
  */
 
 #pragma once
 
-#include "Library.h"
+#include "Graphic.h"
 
 namespace CGQ
 {
     class Manager
     {
-    public:
-        // Graphics
+    public:        
+        // Graphics management
         void        AddGraphic();
-        void        RemoveGraphic();
         void        DuplicateGraphic();
-        void        RenameGraphic(std::string);
+        void        ImportGraphic();
+        void        ExportGraphic();
+        void        MoveGraphicUp();
+        void        MoveGraphicDown();
+        void        MoveGraphicTop();
+        void        MoveGraphicBottom();
         size_t      GraphicCount();
+        int         GraphicIndex();
         Graphic*    GetGraphic();
-        Graphic*    GetGraphic(size_t);
-        size_t      GraphicIndex();
-        void        SelectGraphic(size_t);
-        void        DeselectGraphic();
+        Graphic*    GetGraphic(int i);
+        void        SelectGraphic(int i);
+        void        RenameGraphic(std::string newname);
+        void        RemoveGraphic();
 
-        // Elements
-        void        AddElement(EElementType);
-        void        RemoveElement();
+        // Element management
+        void        AddElement(Type);
         void        DuplicateElement();
-        void        RenameElement(std::string);
+        void        MoveElementUp();
+        void        MoveElementDown();
+        void        MoveElementTop();
+        void        MoveElementBottom();
         size_t      ElementCount();
         Element*    GetElement();
-        Element*    GetElement(size_t);
-        size_t      ElementIndex();
-        void        SelectElement(size_t);
-        void        DeselectElement();
 
     private:
-        Library  m_Library = { this };
-        Graphic* m_Graphic = nullptr;
-        Element* m_Element = nullptr;
+        friend class Element;
+        friend class Graphic;
+
+        std::vector<Graphic> m_Graphics;
+        Graphic* m_SelectedGraphic = nullptr;
+        int m_SelectedGraphicIndex = -1;
+
+        Element* m_SelectedElement = nullptr;
+
+        entt::registry m_Registry;
+        entt::registry& Reg();
     };
 }

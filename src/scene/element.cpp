@@ -1,54 +1,84 @@
 #include "pch.h"
-#include "Element.h"
+#include "Manager.h"
 
 namespace CGQ
 {
-    extern uint64_t g_ElementCount;
-
-    Element::Element(EElementType type, Graphic* owner)
+    Element::Element(ElementData& data, entt::entity handle, Manager* manager)
+        : m_ElementHandle(handle), m_Manager(manager)
     {
-        m_EntityHandle = m_Registry.create();
-
-        m_Registry.emplace<MetadataComponent>(m_EntityHandle, type, owner);
+        m_Manager->Reg().emplace<ElementData>(m_ElementHandle, data);
     }
 
     std::string Element::Name()
     {
-        MetadataComponent& data = m_Registry.get<MetadataComponent>(m_EntityHandle);
-        return data.Name;
+        return GetData().name;
+    }
+
+    uint32_t Element::ID()
+    {
+        return static_cast<uint32_t>(m_ElementHandle);
     }
 
     std::string Element::Unique()
     {
-        MetadataComponent& data = m_Registry.get<MetadataComponent>(m_EntityHandle);
-        return data.Name + "###" + std::to_string(data.ID);
+        return GetData().name + "###" + std::to_string(ID());
     }
 
     const char* Element::c_str()
     {
-        MetadataComponent& data = m_Registry.get<MetadataComponent>(m_EntityHandle);
-        return data.Name.c_str();
-    }
-
-    uint64_t Element::ID()
-    {
-        MetadataComponent& data = m_Registry.get<MetadataComponent>(m_EntityHandle);
-        return data.ID;
+        return GetData().name.c_str();
     }
 
     uint64_t Element::Duration()
     {
-        MetadataComponent& data = m_Registry.get<MetadataComponent>(m_EntityHandle);
-        return data.Duration;
+        return GetData().duration;
     }
 
     bool Element::IsVisible()
     {
-        return m_Visible;
+        return GetData().isVisible;
     }
 
     bool Element::IsLocked()
     {
-        return m_Locked;
+        return GetData().isLocked;
+    }
+
+    template<typename T, typename... Args>
+    T& Element::AddComponent(Args&&... args)
+    {
+        T& component = m_Manager->Reg().emplace<T>(m_ElementHandle, std::forward<Args>(args)...);
+        return component;
+    }
+
+    template<typename T>
+    T& Element::GetComponent()
+    {
+        return m_Manager->Reg().get<T>(m_ElementHandle);
+    }
+
+    template<typename T>
+    bool Element::HasComponent()
+    {
+        return m_Manager->Reg().has<T>(m_ElementHandle);
+    }
+
+    template<typename T>
+    void Element::RemoveComponent()
+    {
+        if (HasComponent<T>())
+        {
+            m_Manager->Reg().remove<T>(m_ElementHandle);
+        }
+    }
+
+    ElementData& Element::GetData()
+    {
+        return m_Manager->Reg().get<ElementData>(m_ElementHandle);
+    }
+
+    Element::operator bool() const
+    {
+        return m_ElementHandle != entt::null;
     }
 }

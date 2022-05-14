@@ -7,7 +7,7 @@
 
 #pragma once
 
-namespace cgq
+namespace CGQ
 {
     class Scene
     {

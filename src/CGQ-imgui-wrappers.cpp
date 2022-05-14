@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CGQ-imgui-wrappers.h"
 
-namespace CGQ::IMGUI
+namespace CGQ
 {
     void PushMultiItemsWidthsAndLabels(Math::vec3 vector, float w_full)
     {
@@ -50,5 +50,22 @@ namespace CGQ::IMGUI
         ImGui::EndGroup();
 
         return value_changed;
+    }
+
+    // List box wrapper with some style prefaces
+    bool ListBox(const char* label, const ImVec2& size)
+    {
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.f, 0.f, 0.f, 0.f));
+        return ImGui::BeginListBox(label, size);
+    }
+    
+    void EndListBox()
+    {
+        ImGui::EndListBox();
+    }
+
+    void PopStyleColor()
+    {
+        ImGui::PopStyleColor();
     }
 }

@@ -64,17 +64,17 @@ namespace CGQ::UI
     }
 
     // Called every frame to render the windows
-    void Render(uint32_t frame, VkPhysicalDevice gpu, Manager* manager)
+    void Render(uint32_t frame, VkPhysicalDevice gpu, Manager& manager)
     {
         InitDockspace();
         DebugWindows();
         EditorWindow(frame);
         PreviewWindow();
         GraphicsWindow(manager);
-        ElementsWindow(manager);
-        PropertiesWindow(manager);
+        //ElementsWindow(manager);
+        //PropertiesWindow(manager);
         //TimelineWindow();
-        //InformationWindow(gpu);
+        InformationWindow(gpu);
     }
 
     // Initialize the main dockspace with the proper flags
@@ -226,70 +226,107 @@ namespace CGQ::UI
     }
 
     // Current project's graphics library
-    void GraphicsWindow(Manager* m)
+    void GraphicsWindow(Manager& manager)
     {
-        size_t total_gfx = m->GraphicCount();
-
         if (ImGui::Begin(window_gfx_lib))
         {
-            ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.f, 0.f, 0.f, 0.f));
-            if (ImGui::BeginListBox("###LibraryList", ImVec2(-FLT_MIN, -FLT_MIN)))
+            if (CGQ::ListBox("###GraphicsList", ImVec2(-FLT_MIN, -FLT_MIN)))
             {
-                if (ImGui::BeginPopupContextWindow("##Popup"))
+                // Pop up on right-clicking empty area
+                if (ImGui::BeginPopupContextWindow("###GraphicsPopup"))
                 {
                     if (ImGui::MenuItem("New graphic###AddGraphicButton"))
                     {
-                        m->AddGraphic();
+                        manager.AddGraphic();
+                    }
+                    if (ImGui::MenuItem("Import from file..."))
+                    {
+                        // todo: dialog box to select file
                     }
                     ImGui::EndPopup();
                 }
+
+                size_t total_gfx = manager.GraphicCount();
                 for (int i = 0; i < total_gfx; i++)
                 {
-                    const bool selected = (m->GraphicIndex() == i);
-                    Graphic* g = m->GetGraphic(i);
+                    const bool selected = (manager.GraphicIndex() == i);
+                    Graphic* g = manager.GetGraphic(i);
+
+                    // Append selectable to list
                     if (ImGui::Selectable(g->Unique().c_str(), selected))
                     {
-                        m->SelectGraphic(i);
+                        manager.SelectGraphic(i);
                     }
 
+                    // Pop up on right-clicking graphic
                     if (ImGui::BeginPopupContextItem())
                     {
-                        m->SelectGraphic(i);
+                        manager.SelectGraphic(i);
                         ImGui::MenuItem(g->Unique().c_str(), NULL, false, false);
                         ImGui::Separator();
                         if (ImGui::MenuItem("Rename###RenameGraphic", "F2"))
                         {
-                            m->RenameGraphic("Renamed!");
+                            manager.RenameGraphic("Renamed!");
                         }
                         if (ImGui::MenuItem("Duplicate###DuplicateGraphic", "Ctrl+D"))
                         {
-                            m->DuplicateGraphic();
+                            manager.DuplicateGraphic();
                         }
                         if (ImGui::MenuItem("Delete###DeleteGraphic", "Del"))
                         {
-                            m->RemoveGraphic();
-                            total_gfx = m->GraphicCount();
+                            manager.RemoveGraphic();
+                            total_gfx = manager.GraphicCount();
+                        }
+                        ImGui::Separator();
+                        if (ImGui::MenuItem("Move up###MoveUpGraphic"))
+                        {
+                            manager.MoveGraphicUp();
+                        }
+                        if (ImGui::MenuItem("Move down###MoveUpGraphic"))
+                        {
+                            manager.MoveGraphicDown();
+                        }
+                        if (ImGui::MenuItem("Move to top###MoveUpGraphic"))
+                        {
+                            std::cout << "move to top\n";
+                        }
+                        if (ImGui::MenuItem("Move to bottom###MoveUpGraphic"))
+                        {
+                            std::cout << "move to bottom\n";
+                        }
+                        ImGui::Separator();
+                        if (ImGui::MenuItem("Export to file...###ExportGraphic"))
+                        {
+
                         }
                         ImGui::EndPopup();
                     }
                 }
-                ImGui::EndListBox();
+                CGQ::EndListBox();
             }
-            ImGui::PopStyleColor();
+            CGQ::PopStyleColor();
         }
         ImGui::End();
     }
 
     // Selected graphic's elements window & timeline
-    void ElementsWindow(Manager* m)
+    void ElementsWindow(Manager& manager)
     {
-        std::string WindowTitle = m->GetGraphic() ? m->GetGraphic()->Name() + "###ElementsWindow" : "Elements###ElementsWindow";
+        std::string WindowTitle;
+        if (manager.GetGraphic())
+        {
+            WindowTitle = manager.GetGraphic()->Name() + "###ElementsWindow";
+        }
+        else
+        {
+            WindowTitle = "Elements###ElementsWindow";
+        }
         if (ImGui::Begin(WindowTitle.c_str()))
         {
             float p_w = ImGui::GetWindowWidth();
             float p_h = ImGui::GetWindowHeight();
 
-            if (!m->GetGraphic())
+            if (!manager.GetGraphic())
             {
                 ImGui::TextDisabled("Select a graphic to edit its properties and elements."); // todo: center to screen
             }
@@ -320,18 +357,18 @@ namespace CGQ::UI
     }
 
     // Property editor of the currently selected asset
-    void PropertiesWindow(Manager* m)
+    void PropertiesWindow(Manager& manager)
     {
         ImGui::Begin(window_item_prop);
 
-        if (!m->GetElement())   // No element selected
+        if (!manager.GetElement())   // No element selected
         {
             ImGui::TextDisabled("No element selected.");
             // show graphics stuff instead?
         }
         else
         {
-            Element* el = m->GetElement();
+            Element* el = manager.GetElement();
             if (ImGui::CollapsingHeader("Information", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow))
             {
                 ImGui::TextDisabled("Name:\t");

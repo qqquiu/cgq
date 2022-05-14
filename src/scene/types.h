@@ -6,15 +6,27 @@
 
 #pragma once
 
-enum class EElementType
+namespace CGQ
 {
-    None = 0,
-    Text,
-    Img,
-    ImgSeq,
-    Audio
-};
+    class Type
+    {
+    public:
+        enum class EType : uint8_t
+        {
+            None = 0,
+            Text,
+            Img,
+            ImgSeq,
+            Audio
+        };
 
-const char* el_type_to_cstr(EElementType e);
-std::string el_type_to_str(EElementType e);
+        Type() = delete;
+        constexpr Type(EType el_type) : type(el_type) { }
 
+        const char* ToCStr();
+        std::string ToString();;
+
+    private:
+        EType type;
+    };
+}

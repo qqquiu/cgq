@@ -189,7 +189,6 @@
     <ClCompile Include="src\Scene\Element.cpp" />
     <ClCompile Include="src\Scene\Types.cpp" />
     <ClCompile Include="src\Scene\Graphic.cpp" />
-    <ClCompile Include="src\Scene\Library.cpp" />
     <ClCompile Include="src\Scene\Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -204,14 +203,10 @@
     <ClInclude Include="src\Scene\Types.h" />
     <ClInclude Include="src\Scene\Graphic.h" />
     <ClInclude Include="src\Scene\Keyframe.h" />
-    <ClInclude Include="src\Scene\Library.h" />
     <ClInclude Include="src\Scene\Manager.h" />
     <ClInclude Include="src\Scene\Scene.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="deps\entt\entt.vcxproj">
-      <Project>{2794137c-8095-444a-8f1e-77e2d4c76ffb}</Project>
-    </ProjectReference>
     <ProjectReference Include="deps\glfw\bin\src\glfw.vcxproj">
       <Project>{fe004b37-e75e-3527-80e2-d58c4c9cebcf}</Project>
     </ProjectReference>

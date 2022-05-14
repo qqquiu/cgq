@@ -1,20 +1,23 @@
 #include "pch.h"
-#include "types.h"
+#include "Types.h"
 
-const char* el_type_to_cstr(EElementType e)
+namespace CGQ
 {
-    switch (e)
+    const char* Type::ToCStr()
     {
-    case EElementType::None: return "NO TYPE";
-    case EElementType::Text: return "TEXT";
-    case EElementType::Img: return "IMAGE";
-    case EElementType::ImgSeq: return "IMAGE SEQUENCE";
-    case EElementType::Audio: return "AUDIO";
-    default: return "! UNDEFINED !";
+        switch (type)
+        {
+            case EType::None:   return "NO TYPE";
+            case EType::Text:   return "TEXT";
+            case EType::Img:    return "IMAGE";
+            case EType::ImgSeq: return "IMAGE SEQUENCE";
+            case EType::Audio:  return "AUDIO";
+            default:            return "! UNDEFINED !";
+        }
     }
-}
 
-std::string el_type_to_str(EElementType e)
-{
-    return std::string(el_type_to_cstr(e));
+    std::string Type::ToString()
+    {
+        return std::string(ToCStr());
+    }
 }

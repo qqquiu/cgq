@@ -10,7 +10,6 @@
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 
-//#include "cgq.h"
 #include "core/core.h"
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
@@ -533,7 +532,7 @@ int main()
         ImGui::NewFrame();
 
         // Start CGQ here
-        VkDescriptorSet test;
+        //VkDescriptorSet test;
 
         uint32_t frm = wd->FrameIndex;
 
