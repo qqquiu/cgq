@@ -20,8 +20,11 @@ namespace CGQ
     public:
         float fps();
 
-        Framerate(int, int);
+        // Pass single int such as 60 and constructor will convert to 60000
         Framerate(int);
+        // Pass two ints such as 60 and 1 and constructor will convert to 60000 and 1000 respectively
+        Framerate(int, int);
+        
     private:
         int m_num;
         int m_den;

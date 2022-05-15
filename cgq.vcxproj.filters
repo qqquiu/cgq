@@ -25,7 +25,7 @@
     <ClCompile Include="src\Core\Framerate.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\CGQ-imgui-wrappers.cpp">
+    <ClCompile Include="src\Wrappers\CGQ-imgui.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\Element.cpp">
@@ -38,6 +38,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\Manager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\Framebuffer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -63,16 +66,10 @@
     <ClInclude Include="src\Scene\Graphic.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\CGQ-imgui-wrappers.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Scene\Keyframe.h">
+    <ClInclude Include="src\Wrappers\CGQ-imgui.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene\Manager.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Scene\Scene.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\UI.h">
@@ -81,5 +78,6 @@
     <ClInclude Include="src\Core\MathLib.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\Renderer\Framebuffer.h" />
   </ItemGroup>
 </Project>

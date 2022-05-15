@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ui.h"
+#include "UI.h"
 
 namespace CGQ::UI
 {
@@ -10,7 +10,7 @@ namespace CGQ::UI
     const char* window_gfx_el = "Elements###GraphicElements";
     const char* window_item_prop = "Properties###Properties";
     const char* window_timeline = "Timeline###Timeline";
-    const char* window_stats = "Stats###Stats";
+    const char* window_stats = "###PerformanceWindow";
 
     void SetTheme()
     {
@@ -71,8 +71,8 @@ namespace CGQ::UI
         EditorWindow(frame);
         PreviewWindow();
         GraphicsWindow(manager);
-        //ElementsWindow(manager);
-        //PropertiesWindow(manager);
+        ElementsWindow(manager);
+        PropertiesWindow(manager);
         //TimelineWindow();
         InformationWindow(gpu);
     }
@@ -230,23 +230,25 @@ namespace CGQ::UI
     {
         if (ImGui::Begin(window_gfx_lib))
         {
-            if (CGQ::ListBox("###GraphicsList", ImVec2(-FLT_MIN, -FLT_MIN)))
+            size_t total_gfx = manager.GraphicCount();
+
+            // Graphic list box + selectable
+            if (CGQ::ListBox("###GraphicsList", ImVec2(-FLT_MIN, (-FLT_MIN - 30))))
             {
                 // Pop up on right-clicking empty area
                 if (ImGui::BeginPopupContextWindow("###GraphicsPopup"))
                 {
-                    if (ImGui::MenuItem("New graphic###AddGraphicButton"))
+                    if (ImGui::MenuItem("New graphic###Popup_AddGraphic"))
                     {
                         manager.AddGraphic();
                     }
-                    if (ImGui::MenuItem("Import from file..."))
+                    if (ImGui::MenuItem("Import from file...###Popup_ImportGraphic"))
                     {
-                        // todo: dialog box to select file
+                        manager.ImportGraphic();
                     }
                     ImGui::EndPopup();
                 }
 
-                size_t total_gfx = manager.GraphicCount();
                 for (int i = 0; i < total_gfx; i++)
                 {
                     const bool selected = (manager.GraphicIndex() == i);
@@ -264,45 +266,107 @@ namespace CGQ::UI
                         manager.SelectGraphic(i);
                         ImGui::MenuItem(g->Unique().c_str(), NULL, false, false);
                         ImGui::Separator();
-                        if (ImGui::MenuItem("Rename###RenameGraphic", "F2"))
+                        if (ImGui::MenuItem("Rename###Popup_RenameGraphic", "F2"))
                         {
                             manager.RenameGraphic("Renamed!");
                         }
-                        if (ImGui::MenuItem("Duplicate###DuplicateGraphic", "Ctrl+D"))
+                        if (ImGui::MenuItem("Duplicate###Popup_DuplicateGraphic", "Ctrl+D"))
                         {
                             manager.DuplicateGraphic();
                         }
-                        if (ImGui::MenuItem("Delete###DeleteGraphic", "Del"))
+                        if (ImGui::MenuItem("Delete###Popup_RemoveGraphic", "Del"))
                         {
                             manager.RemoveGraphic();
                             total_gfx = manager.GraphicCount();
                         }
                         ImGui::Separator();
-                        if (ImGui::MenuItem("Move up###MoveUpGraphic"))
+                        if (ImGui::MenuItem("Move up###Popup_MoveUpGraphic"))
                         {
                             manager.MoveGraphicUp();
                         }
-                        if (ImGui::MenuItem("Move down###MoveUpGraphic"))
+                        if (ImGui::MenuItem("Move down###Popup_MoveUpGraphic"))
                         {
                             manager.MoveGraphicDown();
                         }
-                        if (ImGui::MenuItem("Move to top###MoveUpGraphic"))
+                        if (ImGui::MenuItem("Move to top###Popup_MoveUpGraphic"))
                         {
-                            std::cout << "move to top\n";
+                            manager.MoveGraphicTop();
                         }
-                        if (ImGui::MenuItem("Move to bottom###MoveUpGraphic"))
+                        if (ImGui::MenuItem("Move to bottom###Popup_MoveUpGraphic"))
                         {
-                            std::cout << "move to bottom\n";
+                            manager.MoveGraphicBottom();
                         }
                         ImGui::Separator();
-                        if (ImGui::MenuItem("Export to file...###ExportGraphic"))
+                        if (ImGui::MenuItem("Export to file...###Popup_ExportGraphicToFile"))
                         {
-
+                            manager.ExportGraphic();
                         }
-                        ImGui::EndPopup();
+ImGui::EndPopup();
                     }
                 }
+
                 CGQ::EndListBox();
+            }
+
+            ImGui::Separator();
+
+            // Lower buttons
+            {
+                // Add new, duplicate, remove
+                ImGui::BeginGroup();
+                if (CGQ::AssetButton("A###Button_AddGraphic"))
+                {
+                    manager.AddGraphic();
+                }
+                if (CGQ::AssetButton("P###Button_DuplicateGraphic"))
+                {
+                    manager.DuplicateGraphic();
+                }
+                if (CGQ::AssetButton("R###Button_RemoveGraphic"))
+                {
+                    manager.RemoveGraphic();
+                    total_gfx = manager.GraphicCount();
+                }
+                ImGui::EndGroup();
+
+                ImGui::SameLine(0, 20);
+
+                // Reordering
+                ImGui::BeginGroup();
+                if (CGQ::AssetButton("U###Button_MoveGraphicUp"))
+                {
+                    manager.MoveGraphicUp();
+                }
+                if (CGQ::AssetButton("D###Button_MoveGraphicDown"))
+                {
+                    manager.MoveGraphicDown();
+                }
+                if (CGQ::AssetButton("T###Button_MoveGraphicTop"))
+                {
+                    manager.MoveGraphicTop();
+                }
+                if (CGQ::AssetButton("B###Button_MoveGraphicBottom"))
+                {
+                    manager.MoveGraphicBottom();
+                }
+                ImGui::EndGroup();
+
+                ImGui::SameLine(0, 20);
+
+                // Import / Export graphic
+                ImGui::BeginGroup();
+                if (CGQ::AssetButton("I###Button_ImportGraphic"))
+                {
+                    manager.ImportGraphic();
+                }
+                if (manager.GetGraphic())
+                {
+                    if (CGQ::AssetButton("E###Button_ExportGraphic"))
+                    {
+                        manager.ExportGraphic();
+                    }
+                }
+                ImGui::EndGroup();
             }
             CGQ::PopStyleColor();
         }
@@ -328,29 +392,58 @@ namespace CGQ::UI
 
             if (!manager.GetGraphic())
             {
-                ImGui::TextDisabled("Select a graphic to edit its properties and elements."); // todo: center to screen
+                ImGui::TextDisabled("Create a graphic to access its elements."); // todo: center to screen
             }
             else
             {
-                ImGui::BeginChild("ElementsTopPane", { -FLT_MIN, 30 });
+                // LEFT PANE: Element List Window
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.f, 1.f, 1.f, 1.f));
+                if (ImGui::BeginChild("ElementsLeftPane", ImVec2(ImGui::GetContentRegionAvail().x / 2.5, -FLT_MIN)))
                 {
-                    ImGui::TextDisabled("Top");
-                }
-                ImGui::EndChild();
-                ImGui::Separator();
-                ImGui::BeginChild("ElementsLeftPane");
-                {
-                    if (ImGui::BeginTable("table3", 2))
+                    if (ImGui::BeginListBox("###ElementListBox", ImVec2(ImGui::GetContentRegionAvail().x - ImGui::GetContentRegionAvail().x / 3, -FLT_MIN)))
                     {
-                        for (int item = 0; item < 14; item++)
-                        {
-                            ImGui::TableNextColumn();
-                            ImGui::Text("Item %d", item);
-                        }
-                        ImGui::EndTable();
+                        ImGui::TextDisabled("List Box");
+                        // probably going to use tree, actually
+                        // list elements here
+                        ImGui::EndListBox();
                     }
+
+                    ImGui::SameLine();
+
+                    // add other things here to the right
+                    ImGui::TextDisabled("other stuff");
+
+                    ImGui::EndChild();
                 }
-                ImGui::EndChild();
+                //ImGui::PopStyleColor();
+
+                ImGui::SameLine();
+
+                // RIGHT PANE: TODO
+                //ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.f, 1.f, 0.f, 1.f));
+                if (ImGui::BeginChild("ElementsRightPane", ImGui::GetContentRegionAvail()))
+                {
+                    // RIGHT PANE: SEEK BAR
+                    //ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.f, 0.f, 1.f, 1.f));
+                    if (ImGui::BeginChild("Seekbar_ElementsRightPane", ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y / 8)))
+                    {
+                        ImGui::TextDisabled("Seek bar");
+                        ImGui::EndChild();
+                    }
+                    //ImGui::PopStyleColor();
+
+                    // RIGHT PANE: KEYFRAME PLACEMENT
+                    //ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.f, 1.f, 1.f, 1.f));
+                    if (ImGui::BeginChild("Keyframes_ElementsRightPane", ImGui::GetContentRegionAvail()))
+                    {
+                        ImGui::TextDisabled("Keyframes");
+                        ImGui::EndChild();
+                    }
+                    //ImGui::PopStyleColor();
+
+                    ImGui::EndChild();
+                }
+                ImGui::PopStyleColor();
             }
         }
         ImGui::End();
@@ -361,7 +454,7 @@ namespace CGQ::UI
     {
         ImGui::Begin(window_item_prop);
 
-        if (!manager.GetElement())   // No element selected
+        if (1)   // No element selected
         {
             ImGui::TextDisabled("No element selected.");
             // show graphics stuff instead?
@@ -385,22 +478,22 @@ namespace CGQ::UI
                 ImGui::TextDisabled("\tPosition");
                 ImGui::Button("+##PositionKeyframe");
                 ImGui::SameLine();
-                //CGQ_W::DragVector("Position###ItemPosition", el->pos(), 1.f, false, false, "%.1f", 1);
+                //CGQ_W::DragVector3("Position###ItemPosition", el->pos(), 1.f, false, false, "%.1f", 1);
                 ImGui::NewLine();
                 ImGui::TextDisabled("\tRotation");
                 ImGui::Button("+##RotationKeyframe");
                 ImGui::SameLine();
-                //CGQ_W::DragVector("Rotation###ItemRotation", el->rot(), 1.f, false, false, "%.1f", 1);
+                //CGQ_W::DragVector3("Rotation###ItemRotation", el->rot(), 1.f, false, false, "%.1f", 1);
                 ImGui::NewLine();
                 ImGui::TextDisabled("\tScale");
                 ImGui::Button("+##ScaleKeyframe");
                 ImGui::SameLine();
-                //CGQ_W::DragVector("Scale###ItemScale", el->scale(), 0.005f, 0.f, false, "%.2f", 1);
+                //CGQ_W::DragVector3("Scale###ItemScale", el->scale(), 0.005f, 0.f, false, "%.2f", 1);
                 ImGui::NewLine();
                 ImGui::TextDisabled("\tAnchor");
                 ImGui::Button("+##AnchorKeyframe");
                 ImGui::SameLine();
-                //CGQ_W::DragVector("Anchor###ItemAnchor", el->anchor(), 1.f, false, false, "%.1f", 1);
+                //CGQ_W::DragVector3("Anchor###ItemAnchor", el->anchor(), 1.f, false, false, "%.1f", 1);
             }
         }
         ImGui::End();

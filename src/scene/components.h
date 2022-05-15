@@ -43,15 +43,15 @@ namespace CGQ
 
     struct TransformComponent
     {
-        Math::mat4 Transform;
+        Math::mat2 Transform;
 
         TransformComponent() = default;
         TransformComponent(const TransformComponent&) = default;
-        TransformComponent(const Math::mat4 & transform)
+        TransformComponent(const Math::mat2 & transform)
             : Transform(transform) {}
 
-        operator Math::mat4& () { return Transform; }
-        operator const Math::mat4& () const { return Transform; }
+        operator Math::mat2& () { return Transform; }
+        operator const Math::mat2& () const { return Transform; }
     };
 
     /*

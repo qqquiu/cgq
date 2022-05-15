@@ -5,8 +5,8 @@
 
 #include <vulkan/vulkan.h>
 
-#include "scene/manager.h"
-#include "CGQ-imgui-wrappers.h"
+#include "Scene/Manager.h"
+#include "Wrappers/CGQ-imgui.h"
 
 namespace CGQ::UI
 {

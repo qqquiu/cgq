@@ -177,7 +177,7 @@
   <ItemGroup>
     <ClCompile Include="src\Core\Framerate.cpp" />
     <ClCompile Include="src\Core\UI.cpp" />
-    <ClCompile Include="src\CGQ-imgui-wrappers.cpp" />
+    <ClCompile Include="src\Wrappers\CGQ-imgui.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -186,6 +186,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Core\Core.cpp" />
+    <ClCompile Include="src\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Scene\Element.cpp" />
     <ClCompile Include="src\Scene\Types.cpp" />
     <ClCompile Include="src\Scene\Graphic.cpp" />
@@ -194,17 +195,16 @@
   <ItemGroup>
     <ClInclude Include="src\Core\Framerate.h" />
     <ClInclude Include="src\Core\UI.h" />
-    <ClInclude Include="src\CGQ-imgui-wrappers.h" />
+    <ClInclude Include="src\Wrappers\CGQ-imgui.h" />
     <ClInclude Include="src\Core\MathLib.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Core\Core.h" />
+    <ClInclude Include="src\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Scene\Components.h" />
     <ClInclude Include="src\Scene\Element.h" />
     <ClInclude Include="src\Scene\Types.h" />
     <ClInclude Include="src\Scene\Graphic.h" />
-    <ClInclude Include="src\Scene\Keyframe.h" />
     <ClInclude Include="src\Scene\Manager.h" />
-    <ClInclude Include="src\Scene\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="deps\glfw\bin\src\glfw.vcxproj">

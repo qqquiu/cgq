@@ -19,41 +19,47 @@ namespace CGQ
         Graphic g = *m_SelectedGraphic;
         GraphicData& data = m_Registry.get<GraphicData>(g.m_GraphicHandle);
         g.m_GraphicHandle = m_Registry.create();
-        data.name += " (1)";
+        data.name += " 2";
         m_Graphics.push_back(g);
         */
     }
 
     void Manager::ImportGraphic()
     {
-
+        std::cout << "Import graphic from file.\n";
     }
 
     void Manager::ExportGraphic()
     {
-
+        std::cout << "Export \"" + m_SelectedGraphic->Name() + "\" to file.\n";
     }
 
     void Manager::MoveGraphicUp()
     {
         if (m_SelectedGraphicIndex)
-            std::swap(m_Graphics[m_SelectedGraphicIndex], m_Graphics[m_SelectedGraphicIndex-1]);
+        {
+            std::swap(m_Graphics[m_SelectedGraphicIndex], m_Graphics[m_SelectedGraphicIndex - 1]);
+            m_SelectedGraphicIndex--;
+        }
     }
 
     void Manager::MoveGraphicDown()
     {
-        if (!m_SelectedGraphicIndex)
+        if (m_SelectedGraphicIndex < m_Graphics.size() - 1)
+        {
             std::swap(m_Graphics[m_SelectedGraphicIndex], m_Graphics[m_SelectedGraphicIndex + 1]);
+            m_SelectedGraphicIndex++;
+        }
     }
 
     void Manager::MoveGraphicTop()
     {
-        // todo
+        std::cout << "Move \"" + m_SelectedGraphic->Name() + "\" to top.\n";
     }
 
     void Manager::MoveGraphicBottom()
     {
-        // todo
+        std::cout << "Move \"" + m_SelectedGraphic->Name() + "\" to bottom.\n";
     }
 
     size_t Manager::GraphicCount()
@@ -90,20 +96,18 @@ namespace CGQ
 
     void Manager::RemoveGraphic()
     {
-        m_Graphics.erase(m_Graphics.begin() + m_SelectedGraphicIndex);
+        // todo fix this shit
     }
 
     void Manager::AddElement(Type type)
     {
-        std::string name = type.ToString() + " " + std::to_string(m_SelectedGraphic->Elements());
         GraphicData& g_data = m_Registry.get<GraphicData>(m_SelectedGraphic->m_GraphicHandle);
-        
-        ElementData el_data {type, name, g_data.duration};
+        ElementData el_data {type, type.ToString(), g_data.duration};
 
         Element el { el_data, m_Registry.create(), this};
 
         m_SelectedGraphic->m_Elements.push_back(el);
-        m_SelectedElement = nullptr;
+        m_SelectedElement = &m_SelectedGraphic->m_Elements.back();
     }
 
     void Manager::DuplicateElement()

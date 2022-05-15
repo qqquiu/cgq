@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "CGQ-imgui-wrappers.h"
+#include "CGQ-imgui.h"
 
 namespace CGQ
 {
@@ -18,7 +18,7 @@ namespace CGQ
     }
 
     // DragFloat wrapper itself
-    bool DragVector(std::string label, Math::vec3* vector, float v_speed, float v_min, float v_max, const char* display_format, float power)
+    bool DragVector3(std::string label, Math::vec3* vector, float v_speed, float v_min, float v_max, const char* display_format, float power)
     {
         ImGuiWindow* window = ImGui::GetCurrentWindow();
         if (window->SkipItems)
@@ -28,7 +28,7 @@ namespace CGQ
         bool value_changed = false;
         ImGui::BeginGroup();
 
-        float* v[3] = {&vector->x, &vector->y, &vector->z};
+        float* v[3] = {&vector->X, &vector->Y, &vector->Z};
         PushMultiItemsWidthsAndLabels(*vector, 0.0f);
 
         char c = 'X'; // wtf am i doing
@@ -59,13 +59,22 @@ namespace CGQ
         return ImGui::BeginListBox(label, size);
     }
     
+    // Just so we don't get confused
     void EndListBox()
     {
         ImGui::EndListBox();
     }
 
+    // Just so we don't get confused
     void PopStyleColor()
     {
         ImGui::PopStyleColor();
+    }
+
+    bool AssetButton(const char* label)
+    {
+        bool result = ImGui::Button(label, ImVec2(20.f, -FLT_MIN));
+        ImGui::SameLine();
+        return result;
     }
 }

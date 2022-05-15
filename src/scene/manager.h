@@ -14,7 +14,7 @@ namespace CGQ
     class Manager
     {
     public:        
-        // Graphics management
+        // Graphic management
         void        AddGraphic();
         void        DuplicateGraphic();
         void        ImportGraphic();

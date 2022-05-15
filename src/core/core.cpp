@@ -2,7 +2,6 @@
 #include "Core.h"
 #include "UI.h"
 #include "Scene/Manager.h"
-#include "Scene/Scene.h"
 #include <vulkan/vulkan.h>
 
 namespace CGQ
