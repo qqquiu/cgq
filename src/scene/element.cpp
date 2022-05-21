@@ -14,6 +14,11 @@ namespace CGQ
         return GetData().name;
     }
 
+    Type Element::Type()
+    {
+        return GetData().type;
+    }
+
     uint32_t Element::ID()
     {
         return static_cast<uint32_t>(m_ElementHandle);
@@ -42,34 +47,6 @@ namespace CGQ
     bool Element::IsLocked()
     {
         return GetData().isLocked;
-    }
-
-    template<typename T, typename... Args>
-    T& Element::AddComponent(Args&&... args)
-    {
-        T& component = m_Manager->Reg().emplace<T>(m_ElementHandle, std::forward<Args>(args)...);
-        return component;
-    }
-
-    template<typename T>
-    T& Element::GetComponent()
-    {
-        return m_Manager->Reg().get<T>(m_ElementHandle);
-    }
-
-    template<typename T>
-    bool Element::HasComponent()
-    {
-        return m_Manager->Reg().has<T>(m_ElementHandle);
-    }
-
-    template<typename T>
-    void Element::RemoveComponent()
-    {
-        if (HasComponent<T>())
-        {
-            m_Manager->Reg().remove<T>(m_ElementHandle);
-        }
     }
 
     ElementData& Element::GetData()

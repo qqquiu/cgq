@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "Core/MathLib.h"
+#include "Scene/Element.h"
 
 // Thanks to volcoma for this helpful DragFloat wrapper which I've used as a base
 // https://github.com/ocornut/imgui/issues/1831#issuecomment-391324007
@@ -23,5 +24,13 @@ namespace CGQ
     // Just so we don't get confused
     void PopStyleColor();
 
+    void BeginAssetButtonGroup(float left_space);
+
+    void EndAssetButtonGroup();
+
     bool AssetButton(const char* label);
+
+    bool ElementTreeNode(Element& el);
+
+    void ElementTreePop(Element& el);
 }

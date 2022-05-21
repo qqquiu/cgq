@@ -5,7 +5,7 @@ namespace CGQ
 {
     void Manager::AddGraphic()
     {
-        GraphicData g_data {"New Graphic", 0};
+        GraphicData g_data = {"Graphic", 0};
         Graphic g = {g_data, m_Registry.create(), this};
         m_Graphics.push_back(g);
         m_SelectedGraphicIndex = m_Graphics.size() - 1;
@@ -143,6 +143,16 @@ namespace CGQ
     Element* Manager::GetElement()
     {
         return m_SelectedElement;
+    }
+
+    Element* Manager::GetElement(int i)
+    {
+        return &m_SelectedGraphic->m_Elements[i];
+    }
+
+    void Manager::SelectElement(int i)
+    {
+        m_SelectedElement = GetElement(i);
     }
 
     entt::registry& Manager::Reg()

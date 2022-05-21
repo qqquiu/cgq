@@ -5,6 +5,8 @@
 
 #include <vulkan/vulkan.h>
 
+#include "Scene/Element.h"
+#include "Scene/Graphic.h"
 #include "Scene/Manager.h"
 #include "Wrappers/CGQ-imgui.h"
 

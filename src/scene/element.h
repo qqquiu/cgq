@@ -24,6 +24,7 @@ namespace CGQ
         ~Element() = default;
 
         std::string Name();
+        Type Type();
         uint32_t ID();
         std::string Unique();
         const char* c_str();
@@ -31,23 +32,41 @@ namespace CGQ
         bool IsVisible();
         bool IsLocked();
 
+        /*
         template<typename T, typename... Args>
-        T& AddComponent(Args&&... args);
+        T& AddComponent(Args&&... args)
+        {
+            T& component = m_Manager->Reg().emplace<T>(m_ElementHandle, std::forward<Args>(args)...);
+            return component;
+        }
 
         template<typename T>
-        T& GetComponent();
+        T& GetComponent()
+        {
+            return m_Manager->Reg().get<T>(m_ElementHandle);
+        }
 
         template<typename T>
-        bool HasComponent();
+        bool HasComponent()
+        {
+            return m_Manager->Reg().has<T>(m_ElementHandle);
+        }
 
         template<typename T>
-        void RemoveComponent();
+        void RemoveComponent()
+        {
+            if (HasComponent<T>())
+            {
+                m_Manager->Reg().remove<T>(m_ElementHandle);
+            }
+        }
+        */
 
         operator bool() const;
 
     private:
         friend class Manager;
-        Manager* m_Manager;
+        Manager* m_Manager = nullptr;
 
         entt::entity m_ElementHandle = { entt::null };
 

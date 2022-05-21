@@ -27,6 +27,7 @@ namespace CGQ
         Type type;
         std::string name;
         uint64_t duration;
+        Math::vec3 color; // Color in timeline
         bool isVisible;
         bool isLocked;
 

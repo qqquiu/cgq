@@ -3,12 +3,14 @@
 
 namespace CGQ::UI
 {
+    constexpr float AssetButtonBottomPadding = 30.f;
+
     const char* window_editor = "Viewport###Viewport";
     const char* window_preview = "Preview###Preview";
     const char* window_assets = "Assets###Assets";
     const char* window_gfx_lib = "Graphics###Graphics";
     const char* window_gfx_el = "Elements###GraphicElements";
-    const char* window_item_prop = "Properties###Properties";
+    const char* window_item_prop = "Attributes###AttributesWindow";
     const char* window_timeline = "Timeline###Timeline";
     const char* window_stats = "###PerformanceWindow";
 
@@ -17,6 +19,7 @@ namespace CGQ::UI
         ImGuiStyle* style = &ImGui::GetStyle();
         ImVec4* colors = ImGui::GetStyle().Colors;
 
+        /*
         colors[ImGuiCol_WindowBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
         colors[ImGuiCol_PopupBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
         colors[ImGuiCol_Border] = ImVec4(0.07f, 0.07f, 0.07f, 0.00f);
@@ -45,6 +48,7 @@ namespace CGQ::UI
         colors[ImGuiCol_TextSelectedBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.32f);
         colors[ImGuiCol_DragDropTarget] = ImVec4(1.00f, 1.00f, 1.00f, 0.71f);
         colors[ImGuiCol_Border] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+        */
 
         style->WindowMenuButtonPosition = ImGuiDir_None;
 
@@ -232,10 +236,10 @@ namespace CGQ::UI
         {
             size_t total_gfx = manager.GraphicCount();
 
-            // Graphic list box + selectable
-            if (CGQ::ListBox("###GraphicsList", ImVec2(-FLT_MIN, (-FLT_MIN - 30))))
+            // TOP: Graphic list
+            if (ImGui::BeginChild("Graphics_ListBox", ImVec2(-FLT_MIN, (-FLT_MIN - AssetButtonBottomPadding))))
             {
-                // Pop up on right-clicking empty area
+                // Pop up on right-click empty area
                 if (ImGui::BeginPopupContextWindow("###GraphicsPopup"))
                 {
                     if (ImGui::MenuItem("New graphic###Popup_AddGraphic"))
@@ -249,6 +253,7 @@ namespace CGQ::UI
                     ImGui::EndPopup();
                 }
 
+                // Graphics list
                 for (int i = 0; i < total_gfx; i++)
                 {
                     const bool selected = (manager.GraphicIndex() == i);
@@ -301,19 +306,20 @@ namespace CGQ::UI
                         {
                             manager.ExportGraphic();
                         }
-ImGui::EndPopup();
+                        ImGui::EndPopup();
                     }
                 }
-
-                CGQ::EndListBox();
+                
+                ImGui::EndChild(); // Graphics_ListBox
             }
 
             ImGui::Separator();
 
-            // Lower buttons
+            // BOTTOM: Asset buttons
+            if (ImGui::BeginChild("Graphics_AssetButtons", ImVec2(-FLT_MIN, -FLT_MIN)))
             {
                 // Add new, duplicate, remove
-                ImGui::BeginGroup();
+                CGQ::BeginAssetButtonGroup(20);
                 if (CGQ::AssetButton("A###Button_AddGraphic"))
                 {
                     manager.AddGraphic();
@@ -327,12 +333,10 @@ ImGui::EndPopup();
                     manager.RemoveGraphic();
                     total_gfx = manager.GraphicCount();
                 }
-                ImGui::EndGroup();
-
-                ImGui::SameLine(0, 20);
+                CGQ::EndAssetButtonGroup();
 
                 // Reordering
-                ImGui::BeginGroup();
+                CGQ::BeginAssetButtonGroup(20);
                 if (CGQ::AssetButton("U###Button_MoveGraphicUp"))
                 {
                     manager.MoveGraphicUp();
@@ -349,12 +353,10 @@ ImGui::EndPopup();
                 {
                     manager.MoveGraphicBottom();
                 }
-                ImGui::EndGroup();
-
-                ImGui::SameLine(0, 20);
+                CGQ::EndAssetButtonGroup();
 
                 // Import / Export graphic
-                ImGui::BeginGroup();
+                CGQ::BeginAssetButtonGroup(20);
                 if (CGQ::AssetButton("I###Button_ImportGraphic"))
                 {
                     manager.ImportGraphic();
@@ -366,9 +368,10 @@ ImGui::EndPopup();
                         manager.ExportGraphic();
                     }
                 }
-                ImGui::EndGroup();
+                CGQ::EndAssetButtonGroup();
+
+                ImGui::EndChild(); // Graphics_AssetButtons
             }
-            CGQ::PopStyleColor();
         }
         ImGui::End();
     }
@@ -376,77 +379,225 @@ ImGui::EndPopup();
     // Selected graphic's elements window & timeline
     void ElementsWindow(Manager& manager)
     {
-        std::string WindowTitle;
-        if (manager.GetGraphic())
+        std::string win_title;
+        if (!manager.GetGraphic())
         {
-            WindowTitle = manager.GetGraphic()->Name() + "###ElementsWindow";
+            win_title = { window_gfx_el };
+            if (ImGui::Begin(win_title.c_str()))
+            {
+                ImGui::TextDisabled("No graphic selected. Create a new graphic to start.");
+                ImGui::End();
+            }
         }
         else
         {
-            WindowTitle = "Elements###ElementsWindow";
-        }
-        if (ImGui::Begin(WindowTitle.c_str()))
-        {
-            float p_w = ImGui::GetWindowWidth();
-            float p_h = ImGui::GetWindowHeight();
-
-            if (!manager.GetGraphic())
-            {
-                ImGui::TextDisabled("Create a graphic to access its elements."); // todo: center to screen
-            }
-            else
+            win_title = manager.GetGraphic()->Unique() + "###GraphicElements";
+            if (ImGui::Begin(win_title.c_str()))
             {
                 // LEFT PANE: Element List Window
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.f, 1.f, 1.f, 1.f));
-                if (ImGui::BeginChild("ElementsLeftPane", ImVec2(ImGui::GetContentRegionAvail().x / 2.5, -FLT_MIN)))
+                if (ImGui::BeginChild("ElementsLeftPane", ImVec2(ImGui::GetContentRegionAvail().x / 3, ImGui::GetContentRegionAvail().y)))
                 {
-                    if (ImGui::BeginListBox("###ElementListBox", ImVec2(ImGui::GetContentRegionAvail().x - ImGui::GetContentRegionAvail().x / 3, -FLT_MIN)))
+                    ImGui::TextDisabled(manager.GetGraphic()->c_str());
+                    ImGui::SameLine(0, 300);
+                    ImGui::TextDisabled(manager.GetGraphic()->c_str());
+                    // Element List
+                    if (ImGui::BeginChild("ElementsLeftPane_Tree", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - AssetButtonBottomPadding)))
                     {
-                        ImGui::TextDisabled("List Box");
-                        // probably going to use tree, actually
-                        // list elements here
-                        ImGui::EndListBox();
+                        // Right-click on empty area
+                        if (ImGui::BeginPopupContextWindow("###ElementsPopup"))
+                        {
+                            if (ImGui::BeginMenu("New element###ElementsPopup_New"))
+                            {
+                                if (ImGui::MenuItem("Text###PopupMenu_AddText"))
+                                {
+                                    manager.AddElement(Type::EType::Text);
+                                }
+                                if (ImGui::MenuItem("Image###PopupMenu_AddImage"))
+                                {
+                                    manager.AddElement(Type::EType::Img);
+                                }
+                                if (ImGui::MenuItem("Image Sequence###PopupMenu_AddImageSeq"))
+                                {
+                                    manager.AddElement(Type::EType::ImgSeq);
+                                }
+                                if (ImGui::MenuItem("Audio###PopupMenu_AddAudio"))
+                                {
+                                    manager.AddElement(Type::EType::Audio);
+                                }
+                                ImGui::EndMenu();
+                            }
+                            ImGui::EndPopup();
+                        }
+
+                        if (ImGui::BeginTable("ElementsTable", 4))
+                        {
+                            const float ButtonWidth = ImGui::CalcTextSize("A").x * 1.5f;
+                            ImGui::TableSetupColumn("###ColumnElementName");
+                            ImGui::TableSetupColumn("###ColumnElementVisible", ImGuiTableColumnFlags_WidthFixed, ButtonWidth);
+                            ImGui::TableSetupColumn("###ColumnElementLocked", ImGuiTableColumnFlags_WidthFixed, ButtonWidth);
+                            ImGui::TableSetupColumn("###ColumnElementColor", ImGuiTableColumnFlags_WidthFixed, ButtonWidth);
+
+                            static int selection_mask = (1 << 2);
+                            for (int index = -1; Element & el : *manager.GetGraphic())
+                            {
+                                index++;
+                                ImGui::TableNextRow();
+                                ImGui::TableNextColumn();
+
+                                ImGuiTreeNodeFlags flags = 0;
+                                flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+                                flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+                                flags |= ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+                                const bool selected = (selection_mask & (1 << index)) != 0;
+                                if (selected)
+                                    flags |= ImGuiTreeNodeFlags_Selected;
+
+                                bool open = ImGui::TreeNodeEx(el.Unique().c_str(), flags);
+
+                                if (ImGui::BeginPopupContextItem())
+                                {
+                                    manager.SelectElement(index);
+                                    ImGui::MenuItem(el.Unique().c_str(), NULL, false, false);
+                                    ImGui::Separator();
+                                    if (ImGui::MenuItem("Rename###Popup_RenameElement", "F2"))
+                                    {
+                                        //manager.RenameElement("Renamed!");
+                                    }
+                                    if (ImGui::MenuItem("Duplicate###Popup_DuplicateElement", "Ctrl+D"))
+                                    {
+                                        //manager.DuplicateGraphic();
+                                    }
+                                    if (ImGui::MenuItem("Delete###Popup_RemoveElement", "Del"))
+                                    {
+                                        //manager.RemoveGraphic();
+                                        //total_gfx = manager.GraphicCount();
+                                    }
+                                    ImGui::Separator();
+                                    if (ImGui::MenuItem("Move up###Popup_MoveUpElement"))
+                                    {
+                                        //manager.MoveGraphicUp();
+                                    }
+                                    if (ImGui::MenuItem("Move down###Popup_MoveUpElement"))
+                                    {
+                                        //manager.MoveGraphicDown();
+                                    }
+                                    if (ImGui::MenuItem("Move to top###Popup_MoveUpElement"))
+                                    {
+                                        //manager.MoveGraphicTop();
+                                    }
+                                    if (ImGui::MenuItem("Move to bottom###Popup_MoveUpElement"))
+                                    {
+                                        //manager.MoveGraphicBottom();
+                                    }
+                                    ImGui::EndPopup();
+                                }
+
+                                ImGui::TableNextColumn();
+                                std::string button;
+                                button = "V###" + el.Unique();
+                                if (ImGui::Button(button.c_str(), ImVec2(20.f, 20.f)))
+                                {
+
+                                }
+                                ImGui::TableNextColumn();
+                                button = "L###" + el.Unique();
+                                if (ImGui::Button(button.c_str(), ImVec2(20.f, 20.f)))
+                                {
+
+                                }
+                                ImGui::TableNextColumn();
+                                button = "C###" + el.Unique();
+                                ImVec4 color;
+                                if (ImGui::ColorEdit3(button.c_str(), (float*)&color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel))
+                                {
+
+                                }
+
+                                ImGui::TableNextColumn();
+
+                                if (open)
+                                {
+                                    ImGui::TextDisabled("Position");
+                                    ImGui::TextDisabled("Rotation");
+                                    ImGui::TextDisabled("Scale");
+                                    ImGui::TextDisabled("Anchor");
+
+                                    ImGui::TreePop();
+                                }
+
+                            }
+                            ImGui::EndTable();
+                        }
+                        ImGui::EndChild(); // ElementLeftPane_Tree
                     }
 
-                    ImGui::SameLine();
+                    ImGui::Separator();
 
-                    // add other things here to the right
-                    ImGui::TextDisabled("other stuff");
+                    // Lower asset buttons
+                    if (ImGui::BeginChild("ElementsLeftPane_AssetButtons", ImVec2(-FLT_MIN, -FLT_MIN)))
+                    {
+                        CGQ::BeginAssetButtonGroup(20);
+                        // Add new, duplicate, remove
+                        if (CGQ::AssetButton("A###Button_AddElement"))
+                        {
+                            Type el_type = { Type::EType::None };
+                            manager.AddElement(el_type);
+                        }
+                        if (CGQ::AssetButton("P###Button_DuplicateElement"))
+                        {
+                            manager.DuplicateGraphic();
+                        }
+                        if (CGQ::AssetButton("R###Button_RemoveElement"))
+                        {
+                            manager.RemoveGraphic();
+                        }
+                        CGQ::EndAssetButtonGroup();
 
-                    ImGui::EndChild();
+                        CGQ::BeginAssetButtonGroup(20);
+                        // Reordering
+                        if (CGQ::AssetButton("U###Button_MoveElementUp"))
+                        {
+                            manager.MoveGraphicUp();
+                        }
+                        if (CGQ::AssetButton("D###Button_MoveElementDown"))
+                        {
+                            manager.MoveGraphicDown();
+                        }
+                        if (CGQ::AssetButton("T###Button_MoveElementTop"))
+                        {
+                            manager.MoveGraphicTop();
+                        }
+                        if (CGQ::AssetButton("B###Button_MoveElementBottom"))
+                        {
+                            manager.MoveGraphicBottom();
+                        }
+                        CGQ::EndAssetButtonGroup();
+
+                        ImGui::EndChild(); // ElementsLeftPane_AssetButtons
+                    }
+
+                    ImGui::EndChild(); // ElementsLeftPane
                 }
-                //ImGui::PopStyleColor();
-
                 ImGui::SameLine();
 
-                // RIGHT PANE: TODO
-                //ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.f, 1.f, 0.f, 1.f));
+                // RIGHT PANE: Track bar and keyframe creation
                 if (ImGui::BeginChild("ElementsRightPane", ImGui::GetContentRegionAvail()))
                 {
-                    // RIGHT PANE: SEEK BAR
-                    //ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.f, 0.f, 1.f, 1.f));
-                    if (ImGui::BeginChild("Seekbar_ElementsRightPane", ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y / 8)))
-                    {
-                        ImGui::TextDisabled("Seek bar");
-                        ImGui::EndChild();
-                    }
-                    //ImGui::PopStyleColor();
+                    // RIGHT PANE: TRACK BAR
+                    ImGui::TextDisabled("Track Bar");
 
-                    // RIGHT PANE: KEYFRAME PLACEMENT
-                    //ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.f, 1.f, 1.f, 1.f));
-                    if (ImGui::BeginChild("Keyframes_ElementsRightPane", ImGui::GetContentRegionAvail()))
+                    // RIGHT PANE: KEYFRAMES
+                    if (ImGui::BeginChild("ElementsRightPane_Keyframes", ImGui::GetContentRegionAvail()))
                     {
                         ImGui::TextDisabled("Keyframes");
                         ImGui::EndChild();
                     }
-                    //ImGui::PopStyleColor();
-
                     ImGui::EndChild();
                 }
-                ImGui::PopStyleColor();
             }
+            ImGui::End();
         }
-        ImGui::End();
     }
 
     // Property editor of the currently selected asset
@@ -454,22 +605,19 @@ ImGui::EndPopup();
     {
         ImGui::Begin(window_item_prop);
 
-        if (1)   // No element selected
+        if (!manager.GetElement())   // No element selected
         {
             ImGui::TextDisabled("No element selected.");
             // show graphics stuff instead?
         }
         else
         {
-            Element* el = manager.GetElement();
+            Element& el = *manager.GetElement();
             if (ImGui::CollapsingHeader("Information", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow))
             {
-                ImGui::TextDisabled("Name:\t");
-                ImGui::SameLine();
-                ImGui::TextDisabled(el->Name().c_str());
-                ImGui::TextDisabled("ID:\t");
-                ImGui::SameLine();
-                ImGui::TextDisabled("%d", el->ID());
+                ImGui::TextDisabled("Name: %s", el.Name().c_str());
+                ImGui::TextDisabled("Type: %s", el.Type().ToCStr());
+                ImGui::TextDisabled("ID: %d", el.ID());
             }
             ImGui::Spacing();
             // test if element is of type visual or audio

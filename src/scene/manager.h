@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "Element.h"
 #include "Graphic.h"
 
 namespace CGQ
@@ -40,6 +41,8 @@ namespace CGQ
         void        MoveElementBottom();
         size_t      ElementCount();
         Element*    GetElement();
+        Element*    GetElement(int i);
+        void        SelectElement(int i);
 
     private:
         friend class Element;

@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "CGQ-imgui.h"
+#include "Scene/Element.h"
+#include "Scene/Graphic.h"
+#include "Scene/Manager.h"
 
 namespace CGQ
 {
@@ -62,6 +65,7 @@ namespace CGQ
     // Just so we don't get confused
     void EndListBox()
     {
+        ImGui::PopStyleColor();
         ImGui::EndListBox();
     }
 
@@ -71,10 +75,36 @@ namespace CGQ
         ImGui::PopStyleColor();
     }
 
+    void BeginAssetButtonGroup(float left_space)
+    {
+        ImGui::SameLine(0, left_space);
+        ImGui::BeginGroup();
+    }
+
+    void EndAssetButtonGroup()
+    {
+        ImGui::EndGroup();
+    }
+
     bool AssetButton(const char* label)
     {
-        bool result = ImGui::Button(label, ImVec2(20.f, -FLT_MIN));
         ImGui::SameLine();
-        return result;
+        return ImGui::Button(label, ImVec2(20.f, 20.f));
+    }
+
+    bool ElementTreeNode(Element& el)
+    {
+        ImGuiTreeNodeFlags flags = 0;
+        flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+        flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+        flags |= ImGuiTreeNodeFlags_AllowItemOverlap;
+        flags |= ImGuiTreeNodeFlags_Framed;
+        return ImGui::TreeNodeEx(el.Unique().c_str(), flags);
+    }
+
+    void ElementTreePop(Element& el)
+    {
+        //ElementData& data = el.GetComponent<ElementData>(); 
+        ImGui::TreePop();
     }
 }

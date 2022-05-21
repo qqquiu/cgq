@@ -29,6 +29,18 @@ namespace CGQ
 
         operator bool() const;
 
+
+        // these iterators might not be working gotta test
+        std::vector<Element>::iterator begin()
+        {
+            return m_Elements.begin();
+        }
+
+        std::vector<Element>::iterator end()
+        {
+            return m_Elements.end();
+        }
+
     private:
         friend class Manager;
         Manager* m_Manager = nullptr;
