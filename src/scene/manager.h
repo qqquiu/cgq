@@ -44,6 +44,27 @@ namespace CGQ
         Element*    GetElement(int i);
         void        SelectElement(int i);
 
+        // Component templates
+        template<typename T>
+        T& GetComponent(Element& el)
+        {
+            return m_Registry.get<T>(el.m_ElementHandle);
+        }
+
+        template<typename T>
+        T& GetComponent(Graphic& g)
+        {
+            return m_Registry.get<T>(g.m_GraphicHandle);
+        }
+
+        /*
+        template<typename T>
+        bool HasComponent(Element& el)
+        {
+            return m_Registry.has<T>(el.m_ElementHandle);
+        }
+        */
+
     private:
         friend class Element;
         friend class Graphic;

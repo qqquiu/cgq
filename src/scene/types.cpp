@@ -3,7 +3,7 @@
 
 namespace CGQ
 {
-    const char* Type::ToCStr()
+    const char* Type::ToCStr() const
     {
         switch (type)
         {
@@ -16,7 +16,7 @@ namespace CGQ
         }
     }
 
-    std::string Type::ToString()
+    std::string Type::ToString() const
     {
         return std::string(ToCStr());
     }

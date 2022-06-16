@@ -4,6 +4,8 @@
 #include "imgui_internal.h"
 #include "Core/MathLib.h"
 #include "Scene/Element.h"
+#include "Scene/Graphic.h"
+#include "Scene/Manager.h"
 
 // Thanks to volcoma for this helpful DragFloat wrapper which I've used as a base
 // https://github.com/ocornut/imgui/issues/1831#issuecomment-391324007
@@ -32,5 +34,5 @@ namespace CGQ
 
     bool ElementTreeNode(Element& el);
 
-    void ElementTreePop(Element& el);
+    void ElementTreePop(Manager& m, Element& el);
 }

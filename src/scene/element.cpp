@@ -7,6 +7,10 @@ namespace CGQ
         : m_ElementHandle(handle), m_Manager(manager)
     {
         m_Manager->Reg().emplace<ElementData>(m_ElementHandle, data);
+        //switch (data.type)
+        {
+
+        }
     }
 
     std::string Element::Name()

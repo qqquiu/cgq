@@ -9,7 +9,7 @@ namespace CGQ::UI
     const char* window_preview = "Preview###Preview";
     const char* window_assets = "Assets###Assets";
     const char* window_gfx_lib = "Graphics###Graphics";
-    const char* window_gfx_el = "Elements###GraphicElements";
+    const char* window_gfx_el = "Elements###ElementsWindow";
     const char* window_item_prop = "Attributes###AttributesWindow";
     const char* window_timeline = "Timeline###Timeline";
     const char* window_stats = "###PerformanceWindow";
@@ -70,7 +70,7 @@ namespace CGQ::UI
     // Called every frame to render the windows
     void Render(uint32_t frame, VkPhysicalDevice gpu, Manager& manager)
     {
-        InitDockspace();
+        Dockspace();
         DebugWindows();
         EditorWindow(frame);
         PreviewWindow();
@@ -82,7 +82,7 @@ namespace CGQ::UI
     }
 
     // Initialize the main dockspace with the proper flags
-    void InitDockspace()
+    void Dockspace()
     {
         static bool opt_fullscreen = true;
         static bool opt_padding = false;
@@ -379,11 +379,9 @@ namespace CGQ::UI
     // Selected graphic's elements window & timeline
     void ElementsWindow(Manager& manager)
     {
-        std::string win_title;
         if (!manager.GetGraphic())
         {
-            win_title = { window_gfx_el };
-            if (ImGui::Begin(win_title.c_str()))
+            if (ImGui::Begin(window_gfx_el))
             {
                 ImGui::TextDisabled("No graphic selected. Create a new graphic to start.");
                 ImGui::End();
@@ -391,210 +389,12 @@ namespace CGQ::UI
         }
         else
         {
-            win_title = manager.GetGraphic()->Unique() + "###GraphicElements";
+            std::string win_title = manager.GetGraphic()->Unique() + "###ElementsWindow";
             if (ImGui::Begin(win_title.c_str()))
             {
-                // LEFT PANE: Element List Window
-                if (ImGui::BeginChild("ElementsLeftPane", ImVec2(ImGui::GetContentRegionAvail().x / 3, ImGui::GetContentRegionAvail().y)))
-                {
-                    ImGui::TextDisabled(manager.GetGraphic()->c_str());
-                    ImGui::SameLine(0, 300);
-                    ImGui::TextDisabled(manager.GetGraphic()->c_str());
-                    // Element List
-                    if (ImGui::BeginChild("ElementsLeftPane_Tree", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - AssetButtonBottomPadding)))
-                    {
-                        // Right-click on empty area
-                        if (ImGui::BeginPopupContextWindow("###ElementsPopup"))
-                        {
-                            if (ImGui::BeginMenu("New element###ElementsPopup_New"))
-                            {
-                                if (ImGui::MenuItem("Text###PopupMenu_AddText"))
-                                {
-                                    manager.AddElement(Type::EType::Text);
-                                }
-                                if (ImGui::MenuItem("Image###PopupMenu_AddImage"))
-                                {
-                                    manager.AddElement(Type::EType::Img);
-                                }
-                                if (ImGui::MenuItem("Image Sequence###PopupMenu_AddImageSeq"))
-                                {
-                                    manager.AddElement(Type::EType::ImgSeq);
-                                }
-                                if (ImGui::MenuItem("Audio###PopupMenu_AddAudio"))
-                                {
-                                    manager.AddElement(Type::EType::Audio);
-                                }
-                                ImGui::EndMenu();
-                            }
-                            ImGui::EndPopup();
-                        }
-
-                        if (ImGui::BeginTable("ElementsTable", 4))
-                        {
-                            const float ButtonWidth = ImGui::CalcTextSize("A").x * 1.5f;
-                            ImGui::TableSetupColumn("###ColumnElementName");
-                            ImGui::TableSetupColumn("###ColumnElementVisible", ImGuiTableColumnFlags_WidthFixed, ButtonWidth);
-                            ImGui::TableSetupColumn("###ColumnElementLocked", ImGuiTableColumnFlags_WidthFixed, ButtonWidth);
-                            ImGui::TableSetupColumn("###ColumnElementColor", ImGuiTableColumnFlags_WidthFixed, ButtonWidth);
-
-                            static int selection_mask = (1 << 2);
-                            for (int index = -1; Element & el : *manager.GetGraphic())
-                            {
-                                index++;
-                                ImGui::TableNextRow();
-                                ImGui::TableNextColumn();
-
-                                ImGuiTreeNodeFlags flags = 0;
-                                flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
-                                flags |= ImGuiTreeNodeFlags_OpenOnArrow;
-                                flags |= ImGuiTreeNodeFlags_OpenOnDoubleClick;
-
-                                const bool selected = (selection_mask & (1 << index)) != 0;
-                                if (selected)
-                                    flags |= ImGuiTreeNodeFlags_Selected;
-
-                                bool open = ImGui::TreeNodeEx(el.Unique().c_str(), flags);
-
-                                if (ImGui::BeginPopupContextItem())
-                                {
-                                    manager.SelectElement(index);
-                                    ImGui::MenuItem(el.Unique().c_str(), NULL, false, false);
-                                    ImGui::Separator();
-                                    if (ImGui::MenuItem("Rename###Popup_RenameElement", "F2"))
-                                    {
-                                        //manager.RenameElement("Renamed!");
-                                    }
-                                    if (ImGui::MenuItem("Duplicate###Popup_DuplicateElement", "Ctrl+D"))
-                                    {
-                                        //manager.DuplicateGraphic();
-                                    }
-                                    if (ImGui::MenuItem("Delete###Popup_RemoveElement", "Del"))
-                                    {
-                                        //manager.RemoveGraphic();
-                                        //total_gfx = manager.GraphicCount();
-                                    }
-                                    ImGui::Separator();
-                                    if (ImGui::MenuItem("Move up###Popup_MoveUpElement"))
-                                    {
-                                        //manager.MoveGraphicUp();
-                                    }
-                                    if (ImGui::MenuItem("Move down###Popup_MoveUpElement"))
-                                    {
-                                        //manager.MoveGraphicDown();
-                                    }
-                                    if (ImGui::MenuItem("Move to top###Popup_MoveUpElement"))
-                                    {
-                                        //manager.MoveGraphicTop();
-                                    }
-                                    if (ImGui::MenuItem("Move to bottom###Popup_MoveUpElement"))
-                                    {
-                                        //manager.MoveGraphicBottom();
-                                    }
-                                    ImGui::EndPopup();
-                                }
-
-                                ImGui::TableNextColumn();
-                                std::string button;
-                                button = "V###" + el.Unique();
-                                if (ImGui::Button(button.c_str(), ImVec2(20.f, 20.f)))
-                                {
-
-                                }
-                                ImGui::TableNextColumn();
-                                button = "L###" + el.Unique();
-                                if (ImGui::Button(button.c_str(), ImVec2(20.f, 20.f)))
-                                {
-
-                                }
-                                ImGui::TableNextColumn();
-                                button = "C###" + el.Unique();
-                                ImVec4 color;
-                                if (ImGui::ColorEdit3(button.c_str(), (float*)&color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel))
-                                {
-
-                                }
-
-                                ImGui::TableNextColumn();
-
-                                if (open)
-                                {
-                                    ImGui::TextDisabled("Position");
-                                    ImGui::TextDisabled("Rotation");
-                                    ImGui::TextDisabled("Scale");
-                                    ImGui::TextDisabled("Anchor");
-
-                                    ImGui::TreePop();
-                                }
-
-                            }
-                            ImGui::EndTable();
-                        }
-                        ImGui::EndChild(); // ElementLeftPane_Tree
-                    }
-
-                    ImGui::Separator();
-
-                    // Lower asset buttons
-                    if (ImGui::BeginChild("ElementsLeftPane_AssetButtons", ImVec2(-FLT_MIN, -FLT_MIN)))
-                    {
-                        CGQ::BeginAssetButtonGroup(20);
-                        // Add new, duplicate, remove
-                        if (CGQ::AssetButton("A###Button_AddElement"))
-                        {
-                            Type el_type = { Type::EType::None };
-                            manager.AddElement(el_type);
-                        }
-                        if (CGQ::AssetButton("P###Button_DuplicateElement"))
-                        {
-                            manager.DuplicateGraphic();
-                        }
-                        if (CGQ::AssetButton("R###Button_RemoveElement"))
-                        {
-                            manager.RemoveGraphic();
-                        }
-                        CGQ::EndAssetButtonGroup();
-
-                        CGQ::BeginAssetButtonGroup(20);
-                        // Reordering
-                        if (CGQ::AssetButton("U###Button_MoveElementUp"))
-                        {
-                            manager.MoveGraphicUp();
-                        }
-                        if (CGQ::AssetButton("D###Button_MoveElementDown"))
-                        {
-                            manager.MoveGraphicDown();
-                        }
-                        if (CGQ::AssetButton("T###Button_MoveElementTop"))
-                        {
-                            manager.MoveGraphicTop();
-                        }
-                        if (CGQ::AssetButton("B###Button_MoveElementBottom"))
-                        {
-                            manager.MoveGraphicBottom();
-                        }
-                        CGQ::EndAssetButtonGroup();
-
-                        ImGui::EndChild(); // ElementsLeftPane_AssetButtons
-                    }
-
-                    ImGui::EndChild(); // ElementsLeftPane
-                }
+                ElementsWindow_LeftPane(manager);
                 ImGui::SameLine();
-
-                // RIGHT PANE: Track bar and keyframe creation
-                if (ImGui::BeginChild("ElementsRightPane", ImGui::GetContentRegionAvail()))
-                {
-                    // RIGHT PANE: TRACK BAR
-                    ImGui::TextDisabled("Track Bar");
-
-                    // RIGHT PANE: KEYFRAMES
-                    if (ImGui::BeginChild("ElementsRightPane_Keyframes", ImGui::GetContentRegionAvail()))
-                    {
-                        ImGui::TextDisabled("Keyframes");
-                        ImGui::EndChild();
-                    }
-                    ImGui::EndChild();
-                }
+                ElementsWindow_RightPane(manager);
             }
             ImGui::End();
         }
@@ -670,5 +470,220 @@ namespace CGQ::UI
         sprintf_s(buf, "%d FPS\nFrametime: %.2fms", (int)ImGui::GetIO().Framerate, (ImGui::GetIO().DeltaTime) * 1000.f);
         ImGui::Text(buf);
         ImGui::End();
+    }
+
+    void ElementsWindow_LeftPane(Manager& manager)
+    {
+        if (ImGui::BeginChild("ElementsLeftPane", ImVec2(ImGui::GetContentRegionAvail().x / 3, ImGui::GetContentRegionAvail().y)))
+        {
+            // TOP BAR
+            Graphic& g = *manager.GetGraphic();
+            GraphicData& data = manager.GetComponent<GraphicData>(g);
+            ImGui::TextDisabled("Duration: %d", data.duration);
+
+            ImGui::Separator();
+            if (ImGui::BeginChild("ElementsLeftPane_Tree", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - AssetButtonBottomPadding)))
+            {
+                // Right-click on empty area
+                if (ImGui::BeginPopupContextWindow("###ElementsPopup"))
+                {
+                    if (ImGui::BeginMenu("New element###ElementsPopup_New"))
+                    {
+                        if (ImGui::MenuItem("Text###PopupMenu_AddText"))
+                        {
+                            manager.AddElement(Type::EType::Text);
+                        }
+                        if (ImGui::MenuItem("Image###PopupMenu_AddImage"))
+                        {
+                            manager.AddElement(Type::EType::Img);
+                        }
+                        if (ImGui::MenuItem("Image Sequence###PopupMenu_AddImageSeq"))
+                        {
+                            manager.AddElement(Type::EType::ImgSeq);
+                        }
+                        if (ImGui::MenuItem("Audio###PopupMenu_AddAudio"))
+                        {
+                            manager.AddElement(Type::EType::Audio);
+                        }
+                        ImGui::EndMenu();
+                    }
+                    ImGui::EndPopup();
+                }
+
+                if (ImGui::BeginTable("ElementsTable", 4))
+                {
+                    const float ButtonWidth = ImGui::CalcTextSize("A").x * 2.f;
+                    ImGui::TableSetupColumn("###ColumnElementName");
+                    ImGui::TableSetupColumn("###ColumnElementVisible", ImGuiTableColumnFlags_WidthFixed, ButtonWidth);
+                    ImGui::TableSetupColumn("###ColumnElementLocked", ImGuiTableColumnFlags_WidthFixed, ButtonWidth);
+                    ImGui::TableSetupColumn("###ColumnElementColor", ImGuiTableColumnFlags_WidthFixed, ButtonWidth);
+
+                    static int selection_mask = (1 << 2);
+                    for (int index = -1; Element & el : *manager.GetGraphic())
+                    {
+                        index++;
+                        ImGui::TableNextRow();
+                        ImGui::TableNextColumn();
+
+                        ImGuiTreeNodeFlags flags = 0;
+                        flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+                        flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+                        flags |= ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+                        const bool selected = (selection_mask & (1 << index)) != 0;
+                        if (selected)
+                            flags |= ImGuiTreeNodeFlags_Selected;
+
+                        bool open = ImGui::TreeNodeEx(el.Unique().c_str(), flags);
+
+                        if (ImGui::BeginPopupContextItem())
+                        {
+                            manager.SelectElement(index);
+                            ImGui::MenuItem(el.Unique().c_str(), NULL, false, false);
+                            ImGui::Separator();
+                            if (ImGui::MenuItem("Rename###Popup_RenameElement", "F2"))
+                            {
+                                //manager.RenameElement("Renamed!");
+                            }
+                            if (ImGui::MenuItem("Duplicate###Popup_DuplicateElement", "Ctrl+D"))
+                            {
+                                //manager.DuplicateGraphic();
+                            }
+                            if (ImGui::MenuItem("Delete###Popup_RemoveElement", "Del"))
+                            {
+                                //manager.RemoveGraphic();
+                                //total_gfx = manager.GraphicCount();
+                            }
+                            ImGui::Separator();
+                            if (ImGui::MenuItem("Move up###Popup_MoveUpElement"))
+                            {
+                                //manager.MoveGraphicUp();
+                            }
+                            if (ImGui::MenuItem("Move down###Popup_MoveUpElement"))
+                            {
+                                //manager.MoveGraphicDown();
+                            }
+                            if (ImGui::MenuItem("Move to top###Popup_MoveUpElement"))
+                            {
+                                //manager.MoveGraphicTop();
+                            }
+                            if (ImGui::MenuItem("Move to bottom###Popup_MoveUpElement"))
+                            {
+                                //manager.MoveGraphicBottom();
+                            }
+                            ImGui::EndPopup();
+                        }
+
+                        ImGui::TableNextColumn();
+                        std::string button;
+                        ElementData& data = manager.GetComponent<ElementData>(el);
+                        button = "V###Visible" + el.Name();
+                        if (ImGui::Button(button.c_str(), ImVec2(20.f, 20.f)))
+                        {
+                            data.isVisible = !data.isVisible;
+                        }
+                        ImGui::TableNextColumn();
+                        button = "L###Locked" + el.Name();
+                        if (ImGui::Button(button.c_str(), ImVec2(20.f, 20.f)))
+                        {
+                            data.isLocked = !data.isLocked;
+                        }
+                        ImGui::TableNextColumn();
+                        button = "C###Color" + el.Name();
+                        ImVec4 color;
+                        if (ImGui::ColorEdit3(button.c_str(), (float*)&color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel))
+                        {
+
+                        }
+
+                        ImGui::TableNextColumn();
+
+                        if (open)
+                        {
+                            CGQ::ElementTreePop(manager, el);
+                        }
+
+                    }
+                    ImGui::EndTable();
+                }
+                ImGui::EndChild(); // ElementLeftPane_Tree
+            }
+
+            ImGui::Separator();
+
+            // Lower asset buttons
+            if (ImGui::BeginChild("ElementsLeftPane_AssetButtons", ImVec2(-FLT_MIN, -FLT_MIN)))
+            {
+                CGQ::BeginAssetButtonGroup(20);
+                // Add new, duplicate, remove
+                if (CGQ::AssetButton("A###Button_AddElement"))
+                    ImGui::OpenPopup("Button_AddElementPopup");
+
+                if (ImGui::BeginPopup("Button_AddElementPopup"))
+                {
+                    if (ImGui::Selectable("Text###Button_AddTextElement"))
+                    {
+                        manager.AddElement(Type::EType::Text);
+                    }
+                    if (ImGui::Selectable("Image###Button_AddImgElement"))
+                    {
+                        manager.AddElement(Type::EType::Img);
+                    }
+                    if (ImGui::Selectable("Image Sequence###Button_AddImgSeqElement"))
+                    {
+                        manager.AddElement(Type::EType::ImgSeq);
+                    }
+                    if (ImGui::Selectable("Audio###Button_AddAudioElement"))
+                    {
+                        manager.AddElement(Type::EType::Audio);
+                    }
+                    ImGui::EndPopup();
+                }
+
+                if (CGQ::AssetButton("P###Button_DuplicateElement"))
+                    manager.DuplicateGraphic();
+
+                if (CGQ::AssetButton("R###Button_RemoveElement"))
+                    manager.RemoveGraphic();
+                CGQ::EndAssetButtonGroup();
+
+                CGQ::BeginAssetButtonGroup(20);
+                // Reordering
+                if (CGQ::AssetButton("U###Button_MoveElementUp"))
+                    manager.MoveGraphicUp();
+
+                if (CGQ::AssetButton("D###Button_MoveElementDown"))
+                    manager.MoveGraphicDown();
+
+                if (CGQ::AssetButton("T###Button_MoveElementTop"))
+                    manager.MoveGraphicTop();
+
+                if (CGQ::AssetButton("B###Button_MoveElementBottom"))
+                    manager.MoveGraphicBottom();
+
+                CGQ::EndAssetButtonGroup();
+
+                ImGui::EndChild(); // ElementsLeftPane_AssetButtons
+            }
+
+            ImGui::EndChild(); // ElementsLeftPane
+        }
+    }
+
+    void ElementsWindow_RightPane(Manager& manager)
+    {
+        if (ImGui::BeginChild("ElementsRightPane", ImGui::GetContentRegionAvail()))
+        {
+            // RIGHT PANE: TRACK BAR
+            ImGui::TextDisabled("Track Bar");
+
+            // RIGHT PANE: KEYFRAMES
+            if (ImGui::BeginChild("ElementsRightPane_Keyframes", ImGui::GetContentRegionAvail()))
+            {
+                ImGui::TextDisabled("Keyframes");
+                ImGui::EndChild();
+            }
+            ImGui::EndChild();
+        }
     }
 }

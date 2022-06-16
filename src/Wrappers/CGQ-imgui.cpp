@@ -102,9 +102,15 @@ namespace CGQ
         return ImGui::TreeNodeEx(el.Unique().c_str(), flags);
     }
 
-    void ElementTreePop(Element& el)
+    void ElementTreePop(Manager& m, Element& el)
     {
-        //ElementData& data = el.GetComponent<ElementData>(); 
+        ElementData& data = m.GetComponent<ElementData>(el); 
+        ImGui::TextDisabled("%s duration: %d", data.name.c_str(), data.duration);
+        ImGui::TableNextColumn();
+        ImGui::TextDisabled("%d", data.isVisible);
+        ImGui::TableNextColumn();
+        ImGui::TextDisabled("%d", data.isLocked);
+        //TransformComponent& transform = m.GetComponent<TransformComponent>(el);
         ImGui::TreePop();
     }
 }

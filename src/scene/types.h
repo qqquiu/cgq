@@ -23,8 +23,9 @@ namespace CGQ
         Type() = delete;
         constexpr Type(EType el_type) : type(el_type) { }
 
-        const char* ToCStr();
-        std::string ToString();;
+        const char* ToCStr() const;
+        std::string ToString() const;
+        //EType GetType() const;
 
     private:
         EType type;
